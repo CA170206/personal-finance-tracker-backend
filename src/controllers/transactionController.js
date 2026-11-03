@@ -6,7 +6,7 @@ import { supabase } from '../config/supabase.js';
 export const getTransactions = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { type, category, search, startDate, endDate, sort } = req.query;
+    const { type, category, search, startDate, endDate, sort, payment_method, provider } = req.query;
 
     let query = supabase
       .from('transactions')
@@ -16,6 +16,19 @@ export const getTransactions = async (req, res, next) => {
     // Filter by type (income / expense)
     if (type && type !== 'all') {
       query = query.eq('type', type);
+    }
+
+    // Filter by payment method / provider (e.g. Google Pay, PhonePe, Paytm, Other)
+    const methodFilter = payment_method || provider;
+    if (methodFilter && methodFilter !== 'all') {
+      if (methodFilter.toLowerCase() === 'other') {
+        // Exclude big 3 providers
+        query = query.not('payment_method', 'ilike', '%Google Pay%')
+                     .not('payment_method', 'ilike', '%PhonePe%')
+                     .not('payment_method', 'ilike', '%Paytm%');
+      } else {
+        query = query.ilike('payment_method', `%${methodFilter}%`);
+      }
     }
 
     // Filter by category
@@ -74,7 +87,7 @@ export const getTransactions = async (req, res, next) => {
 export const createTransaction = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { title, amount, type, category, date, notes } = req.body;
+    const { title, amount, type, category, date, notes, payment_method, external_id, source } = req.body;
 
     if (!title || amount === undefined || !type || !category || !date) {
       return res.status(400).json({
@@ -109,7 +122,9 @@ export const createTransaction = async (req, res, next) => {
           category: category.trim(),
           date,
           notes: notes ? notes.trim() : '',
-          source: 'manual',
+          source: source || 'manual',
+          payment_method: payment_method || null,
+          external_id: external_id || null,
         },
       ])
       .select()
@@ -136,7 +151,7 @@ export const updateTransaction = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
-    const { title, amount, type, category, date, notes } = req.body;
+    const { title, amount, type, category, date, notes, payment_method, external_id } = req.body;
 
     const updates = {
       updated_at: new Date().toISOString(),
@@ -158,7 +173,9 @@ export const updateTransaction = async (req, res, next) => {
     }
     if (category) updates.category = category.trim();
     if (date) updates.date = date;
-    if (notes !== undefined) updates.notes = notes.trim();
+    if (notes !== undefined) updates.notes = notes ? notes.trim() : '';
+    if (payment_method !== undefined) updates.payment_method = payment_method;
+    if (external_id !== undefined) updates.external_id = external_id;
 
     const { data: updated, error } = await supabase
       .from('transactions')
