@@ -1,0 +1,35 @@
+{
+  "name": "fintrack-backend",
+  "version": "1.0.0",
+  "description": "FinTrack PRO - Node.js, Express, MongoDB & JWT Backend API",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/scripts/seed.js"
+  },
+  "keywords": [
+    "fintech",
+    "personal-finance",
+    "express",
+    "mongodb",
+    "jwt",
+    "rest-api"
+  ],
+  "author": "FinTrack Engineering",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fintrack": "file:..",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
