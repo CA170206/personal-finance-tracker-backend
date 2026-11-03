@@ -1,4 +1,4 @@
-import Transaction from '../models/Transaction.js';
+import { supabase } from '../config/supabase.js';
 import {
   calculateFinancialSummary,
   calculateMonthlyOverview,
@@ -10,10 +10,24 @@ import {
 // @access  Private
 export const getSummary = async (req, res, next) => {
   try {
+    const userId = req.user.id;
     const { period = 'all' } = req.query;
-    const transactions = await Transaction.find({ user: req.user._id }).sort({ date: -1 });
 
-    const summary = calculateFinancialSummary(transactions, period);
+    const { data: transactions, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('user_id', userId)
+      .order('date', { ascending: false });
+
+    if (error) {
+      console.error('[Dashboard Summary] Query error:', error.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve transaction data for summary',
+      });
+    }
+
+    const summary = calculateFinancialSummary(transactions || [], period);
     return res.status(200).json(summary);
   } catch (error) {
     next(error);
@@ -25,10 +39,25 @@ export const getSummary = async (req, res, next) => {
 // @access  Private
 export const getCharts = async (req, res, next) => {
   try {
-    const transactions = await Transaction.find({ user: req.user._id }).sort({ date: -1 });
+    const userId = req.user.id;
 
-    const monthlyOverview = calculateMonthlyOverview(transactions, 6);
-    const expenseBreakdown = calculateExpenseBreakdown(transactions);
+    const { data: transactions, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('user_id', userId)
+      .order('date', { ascending: false });
+
+    if (error) {
+      console.error('[Dashboard Charts] Query error:', error.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve transaction data for charts',
+      });
+    }
+
+    const txList = transactions || [];
+    const monthlyOverview = calculateMonthlyOverview(txList, 6);
+    const expenseBreakdown = calculateExpenseBreakdown(txList);
     const totalExpenses = expenseBreakdown.reduce((sum, item) => sum + item.value, 0);
 
     const spendingTrends = monthlyOverview.map((item) => ({
@@ -41,7 +70,7 @@ export const getCharts = async (req, res, next) => {
       expenseBreakdown,
       totalExpenses,
       spendingTrends,
-      hasData: transactions.length > 0,
+      hasData: txList.length > 0,
     });
   } catch (error) {
     next(error);
@@ -49,4 +78,3 @@ export const getCharts = async (req, res, next) => {
 };
 
 export default { getSummary, getCharts };
-

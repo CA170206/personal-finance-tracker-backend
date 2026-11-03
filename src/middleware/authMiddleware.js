@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import { supabase } from '../config/supabase.js';
 
 export const protect = async (req, res, next) => {
   let token;
@@ -11,35 +11,41 @@ export const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
 
-      // Handle mock tokens if in mock fallback mode
-      if (token.startsWith('mock-jwt-token-')) {
-        req.user = {
-          _id: 'usr_mock_demo',
-          id: 'usr_mock_demo',
-          name: 'Alex Mercer',
-          email: 'alex@example.com',
-          role: 'Pro Member',
-          currency: 'INR',
-          currencySymbol: '₹',
-        };
-        return next();
+      // Verify JWT signature using our Express JWT secret
+      const secret =
+        process.env.JWT_SECRET || 'fintrack_jwt_super_secret_key_2026_finance_suite';
+      const decoded = jwt.verify(token, secret);
+
+      if (!decoded || !decoded.id) {
+        return res.status(401).json({
+          success: false,
+          message: 'Not authorized, invalid token payload',
+        });
       }
 
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || 'fintrack_jwt_super_secret_key_2026_finance_suite'
-      );
+      // Query custom public.users table in Supabase PostgreSQL
+      const { data: user, error } = await supabase
+        .from('users')
+        .select('id, name, email, currency, theme, created_at, updated_at')
+        .eq('id', decoded.id)
+        .single();
 
-      const user = await User.findById(decoded.id).select('-password');
-
-      if (!user) {
+      if (error || !user) {
         return res.status(401).json({
           success: false,
           message: 'Not authorized, user not found',
         });
       }
 
-      req.user = user;
+      // Attach user to req with both id and _id aliases for full compatibility
+      req.user = {
+        ...user,
+        _id: user.id,
+        role: 'Pro Member',
+        currencySymbol: user.currency === 'USD' ? '$' : '₹',
+        joinedDate: user.created_at,
+      };
+
       next();
     } catch (error) {
       console.error('[Auth Middleware] Token verification failed:', error.message);
@@ -57,4 +63,3 @@ export const protect = async (req, res, next) => {
 };
 
 export default protect;
-

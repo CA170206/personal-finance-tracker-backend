@@ -1,54 +1,67 @@
-import Transaction from '../models/Transaction.js';
+import { supabase } from '../config/supabase.js';
 
 // @desc    Get all transactions with filtering and sorting
 // @route   GET /api/transactions
 // @access  Private
 export const getTransactions = async (req, res, next) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const { type, category, search, startDate, endDate, sort } = req.query;
 
-    const query = { user: userId };
+    let query = supabase
+      .from('transactions')
+      .select('*', { count: 'exact' })
+      .eq('user_id', userId);
 
-    // Filter by type
+    // Filter by type (income / expense)
     if (type && type !== 'all') {
-      query.type = type;
+      query = query.eq('type', type);
     }
 
     // Filter by category
     if (category && category !== 'all') {
-      query.category = category;
+      query = query.eq('category', category);
     }
 
     // Filter by date range
-    if (startDate || endDate) {
-      query.date = {};
-      if (startDate) query.date.$gte = startDate;
-      if (endDate) query.date.$lte = endDate;
+    if (startDate) {
+      query = query.gte('date', startDate);
+    }
+    if (endDate) {
+      query = query.lte('date', endDate);
     }
 
-    // Search by title or notes
+    // Search by title or notes (case-insensitive substring)
     if (search && search.trim() !== '') {
-      const searchRegex = new RegExp(search.trim(), 'i');
-      query.$or = [{ title: searchRegex }, { notes: searchRegex }];
+      const term = search.trim();
+      query = query.or(`title.ilike.%${term}%,notes.ilike.%${term}%`);
     }
 
-    // Determine sorting order
-    let sortOption = { date: -1, createdAt: -1 };
+    // Sorting
     if (sort === 'oldest') {
-      sortOption = { date: 1, createdAt: 1 };
+      query = query.order('date', { ascending: true }).order('created_at', { ascending: true });
     } else if (sort === 'amount-desc') {
-      sortOption = { amount: -1 };
+      query = query.order('amount', { ascending: false });
     } else if (sort === 'amount-asc') {
-      sortOption = { amount: 1 };
+      query = query.order('amount', { ascending: true });
+    } else {
+      // Default: newest first
+      query = query.order('date', { ascending: false }).order('created_at', { ascending: false });
     }
 
-    const transactions = await Transaction.find(query).sort(sortOption);
-    const total = await Transaction.countDocuments(query);
+    const { data: transactions, count, error } = await query;
+
+    if (error) {
+      console.error('[Get Transactions] Query error:', error.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve transactions from database',
+      });
+    }
 
     return res.status(200).json({
-      data: transactions,
-      total,
+      data: transactions || [],
+      total: count !== null ? count : (transactions || []).length,
     });
   } catch (error) {
     next(error);
@@ -60,6 +73,7 @@ export const getTransactions = async (req, res, next) => {
 // @access  Private
 export const createTransaction = async (req, res, next) => {
   try {
+    const userId = req.user.id;
     const { title, amount, type, category, date, notes } = req.body;
 
     if (!title || amount === undefined || !type || !category || !date) {
@@ -84,15 +98,30 @@ export const createTransaction = async (req, res, next) => {
       });
     }
 
-    const transaction = await Transaction.create({
-      user: req.user._id,
-      title: title.trim(),
-      amount: numAmount,
-      type,
-      category: category.trim(),
-      date,
-      notes: notes ? notes.trim() : '',
-    });
+    const { data: transaction, error } = await supabase
+      .from('transactions')
+      .insert([
+        {
+          user_id: userId,
+          title: title.trim(),
+          amount: numAmount,
+          type,
+          category: category.trim(),
+          date,
+          notes: notes ? notes.trim() : '',
+          source: 'manual',
+        },
+      ])
+      .select()
+      .single();
+
+    if (error || !transaction) {
+      console.error('[Create Transaction] Insert failed:', error?.message);
+      return res.status(500).json({
+        success: false,
+        message: error?.message || 'Failed to save transaction',
+      });
+    }
 
     return res.status(201).json(transaction);
   } catch (error) {
@@ -105,21 +134,15 @@ export const createTransaction = async (req, res, next) => {
 // @access  Private
 export const updateTransaction = async (req, res, next) => {
   try {
-    const transaction = await Transaction.findOne({
-      _id: req.params.id,
-      user: req.user._id,
-    });
-
-    if (!transaction) {
-      return res.status(404).json({
-        success: false,
-        message: 'Transaction not found or access denied',
-      });
-    }
-
+    const userId = req.user.id;
+    const { id } = req.params;
     const { title, amount, type, category, date, notes } = req.body;
 
-    if (title) transaction.title = title.trim();
+    const updates = {
+      updated_at: new Date().toISOString(),
+    };
+
+    if (title) updates.title = title.trim();
     if (amount !== undefined) {
       const numAmount = Number(amount);
       if (isNaN(numAmount) || numAmount <= 0) {
@@ -128,18 +151,59 @@ export const updateTransaction = async (req, res, next) => {
           message: 'Amount must be a valid positive number',
         });
       }
-      transaction.amount = numAmount;
+      updates.amount = numAmount;
     }
     if (type && ['income', 'expense'].includes(type)) {
-      transaction.type = type;
+      updates.type = type;
     }
-    if (category) transaction.category = category.trim();
-    if (date) transaction.date = date;
-    if (notes !== undefined) transaction.notes = notes.trim();
+    if (category) updates.category = category.trim();
+    if (date) updates.date = date;
+    if (notes !== undefined) updates.notes = notes.trim();
 
-    const updated = await transaction.save();
+    const { data: updated, error } = await supabase
+      .from('transactions')
+      .update(updates)
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single();
+
+    if (error || !updated) {
+      return res.status(404).json({
+        success: false,
+        message: 'Transaction not found or access denied',
+      });
+    }
 
     return res.status(200).json(updated);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get single transaction by ID
+// @route   GET /api/transactions/:id
+// @access  Private
+export const getTransactionById = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const { data: transaction, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single();
+
+    if (error || !transaction) {
+      return res.status(404).json({
+        success: false,
+        message: 'Transaction not found or access denied',
+      });
+    }
+
+    return res.status(200).json(transaction);
   } catch (error) {
     next(error);
   }
@@ -150,12 +214,18 @@ export const updateTransaction = async (req, res, next) => {
 // @access  Private
 export const deleteTransaction = async (req, res, next) => {
   try {
-    const transaction = await Transaction.findOneAndDelete({
-      _id: req.params.id,
-      user: req.user._id,
-    });
+    const userId = req.user.id;
+    const { id } = req.params;
 
-    if (!transaction) {
+    const { data, error } = await supabase
+      .from('transactions')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select('id')
+      .single();
+
+    if (error || !data) {
       return res.status(404).json({
         success: false,
         message: 'Transaction not found or access denied',
@@ -164,7 +234,7 @@ export const deleteTransaction = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      id: req.params.id,
+      id,
     });
   } catch (error) {
     next(error);
@@ -173,8 +243,8 @@ export const deleteTransaction = async (req, res, next) => {
 
 export default {
   getTransactions,
+  getTransactionById,
   createTransaction,
   updateTransaction,
   deleteTransaction,
 };
-

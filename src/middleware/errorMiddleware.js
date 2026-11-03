@@ -8,25 +8,19 @@ export const errorHandler = (err, req, res, next) => {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message || 'Internal Server Error';
 
-  // Handle Mongoose bad ObjectId
-  if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    statusCode = 404;
-    message = 'Resource not found with the requested ID';
-  }
-
-  // Handle Mongoose duplicate key error
-  if (err.code === 11000) {
+  // Handle PostgreSQL / PostgREST specific error codes
+  if (err.code === '23505') {
+    // Unique violation
     statusCode = 400;
-    const field = Object.keys(err.keyValue || {})[0] || 'field';
-    message = `Duplicate value entered for ${field}. Please use another value.`;
-  }
-
-  // Handle Mongoose validation errors
-  if (err.name === 'ValidationError') {
+    message = 'A record with these details already exists.';
+  } else if (err.code === '23503') {
+    // Foreign key violation
     statusCode = 400;
-    message = Object.values(err.errors)
-      .map((val) => val.message)
-      .join(', ');
+    message = 'Referenced resource does not exist.';
+  } else if (err.code === '22P02') {
+    // Invalid text representation (e.g. invalid UUID)
+    statusCode = 400;
+    message = 'Invalid ID or format provided.';
   }
 
   res.status(statusCode).json({
@@ -37,4 +31,3 @@ export const errorHandler = (err, req, res, next) => {
 };
 
 export default { notFound, errorHandler };
-

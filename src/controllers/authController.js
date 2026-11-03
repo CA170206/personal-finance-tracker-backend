@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import { supabase } from '../config/supabase.js';
 
-// Helper to generate JWT token
+// Helper to generate JWT token using the Express secret
 const generateToken = (id) => {
   return jwt.sign(
     { id },
@@ -12,7 +13,7 @@ const generateToken = (id) => {
   );
 };
 
-// @desc    Register a new user
+// @desc    Register a new user in public.users
 // @route   POST /api/auth/register
 // @access  Public
 export const register = async (req, res, next) => {
@@ -34,7 +35,21 @@ export const register = async (req, res, next) => {
     }
 
     const emailLower = email.toLowerCase().trim();
-    const existingUser = await User.findOne({ email: emailLower });
+
+    // Check if user already exists in public.users
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', emailLower)
+      .maybeSingle();
+
+    if (checkError) {
+      console.error('[Register] Error checking existing user:', checkError.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Database error checking user existence',
+      });
+    }
 
     if (existingUser) {
       return res.status(400).json({
@@ -43,26 +58,47 @@ export const register = async (req, res, next) => {
       });
     }
 
-    const user = await User.create({
-      name: name.trim(),
-      email: emailLower,
-      password,
-    });
+    // Hash password with bcryptjs
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
 
-    const token = generateToken(user._id);
+    // Insert user into custom public.users table
+    const { data: newUser, error: insertError } = await supabase
+      .from('users')
+      .insert([
+        {
+          name: name.trim(),
+          email: emailLower,
+          password_hash,
+          currency: 'INR',
+          theme: 'dark',
+        },
+      ])
+      .select('id, name, email, currency, theme, created_at, updated_at')
+      .single();
+
+    if (insertError || !newUser) {
+      console.error('[Register] User creation failed:', insertError?.message);
+      return res.status(500).json({
+        success: false,
+        message: insertError?.message || 'Failed to create user account',
+      });
+    }
+
+    const token = generateToken(newUser.id);
 
     return res.status(201).json({
       success: true,
       token,
       user: {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        currency: user.currency,
-        currencySymbol: user.currencySymbol,
-        role: user.role,
-        theme: user.theme,
-        joinedDate: user.joinedDate,
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        currency: newUser.currency || 'INR',
+        currencySymbol: newUser.currency === 'USD' ? '$' : '₹',
+        role: 'Pro Member',
+        theme: newUser.theme || 'dark',
+        joinedDate: newUser.created_at,
       },
     });
   } catch (error) {
@@ -85,7 +121,21 @@ export const login = async (req, res, next) => {
     }
 
     const emailLower = email.toLowerCase().trim();
-    const user = await User.findOne({ email: emailLower }).select('+password');
+
+    // Query custom public.users table for user with password_hash
+    const { data: user, error: queryError } = await supabase
+      .from('users')
+      .select('id, name, email, password_hash, currency, theme, created_at')
+      .eq('email', emailLower)
+      .maybeSingle();
+
+    if (queryError) {
+      console.error('[Login] Error querying user:', queryError.message);
+      return res.status(500).json({
+        success: false,
+        message: 'Database error during authentication',
+      });
+    }
 
     if (!user) {
       return res.status(401).json({
@@ -94,7 +144,8 @@ export const login = async (req, res, next) => {
       });
     }
 
-    const isMatch = await user.matchPassword(password);
+    // Verify bcrypt password
+    const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -102,20 +153,20 @@ export const login = async (req, res, next) => {
       });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     return res.status(200).json({
       success: true,
       token,
       user: {
-        id: user._id.toString(),
+        id: user.id,
         name: user.name,
         email: user.email,
-        currency: user.currency,
-        currencySymbol: user.currencySymbol,
-        role: user.role,
-        theme: user.theme,
-        joinedDate: user.joinedDate,
+        currency: user.currency || 'INR',
+        currencySymbol: user.currency === 'USD' ? '$' : '₹',
+        role: 'Pro Member',
+        theme: user.theme || 'dark',
+        joinedDate: user.created_at,
       },
     });
   } catch (error) {
@@ -128,16 +179,15 @@ export const login = async (req, res, next) => {
 // @access  Private
 export const getMe = async (req, res) => {
   return res.status(200).json({
-    id: req.user._id ? req.user._id.toString() : req.user.id,
+    id: req.user.id,
     name: req.user.name,
     email: req.user.email,
     currency: req.user.currency || 'INR',
     currencySymbol: req.user.currencySymbol || '₹',
     role: req.user.role || 'Pro Member',
     theme: req.user.theme || 'dark',
-    joinedDate: req.user.joinedDate || new Date().toISOString(),
+    joinedDate: req.user.joinedDate || req.user.created_at,
   });
 };
 
 export default { register, login, getMe };
-

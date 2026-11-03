@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getTransactions,
+  getTransactionById,
   createTransaction,
   updateTransaction,
   deleteTransaction,
@@ -16,6 +17,7 @@ router.route('/')
   .post(createTransaction);
 
 router.route('/:id')
+  .get(getTransactionById)
   .put(updateTransaction)
   .delete(deleteTransaction);
 

@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import morgan from 'morgan';
-import connectDB, { getDbStatus } from './config/db.js';
+import { checkSupabaseConnection } from './config/supabase.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
@@ -10,15 +12,17 @@ import budgetRoutes from './routes/budgetRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
-// Load environment variables
+// Resolve current directory for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure backend/.env is loaded
 dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Initialize Express
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// Connect to MongoDB
-connectDB();
 
 // Middleware
 const allowedOrigins = [
@@ -49,15 +53,47 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Root informative endpoint
+app.get('/', (req, res) => {
   res.status(200).json({
-    status: 'ok',
-    service: 'FinTrack PRO API',
-    version: '1.0.0',
-    database: getDbStatus() ? 'connected' : 'disconnected',
-    timestamp: new Date().toISOString(),
+    service: 'FinTrack PRO Backend API',
+    status: 'active',
+    database: 'Supabase PostgreSQL',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      transactions: '/api/transactions',
+      budgets: '/api/budgets',
+      dashboard: '/api/dashboard',
+      users: '/api/users',
+    },
   });
+});
+
+// Health check endpoint verifying Supabase connectivity
+app.get('/api/health', async (req, res) => {
+  const dbStatus = await checkSupabaseConnection();
+
+  if (dbStatus.ok) {
+    return res.status(200).json({
+      status: 'ok',
+      service: 'FinTrack PRO API',
+      version: '1.0.0',
+      database: 'connected',
+      provider: 'Supabase PostgreSQL',
+      timestamp: new Date().toISOString(),
+    });
+  } else {
+    return res.status(503).json({
+      status: 'error',
+      service: 'FinTrack PRO API',
+      version: '1.0.0',
+      database: 'disconnected',
+      provider: 'Supabase PostgreSQL',
+      error: dbStatus.error,
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 // API Routes
@@ -72,13 +108,21 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start Server
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`====================================================`);
   console.log(`🚀 FinTrack PRO Backend Server running on port ${PORT}`);
   console.log(`📡 API Base URL: http://localhost:${PORT}/api`);
   console.log(`🩺 Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`🗄️ Database: Supabase PostgreSQL`);
   console.log(`====================================================`);
+
+  // Verify Supabase on startup
+  const dbStatus = await checkSupabaseConnection();
+  if (dbStatus.ok) {
+    console.log(`✅ [FinTrack Supabase] Database connection verified successfully!`);
+  } else {
+    console.warn(`⚠️ [FinTrack Supabase] Connection verification issue: ${dbStatus.error}`);
+  }
 });
 
 export default app;
-
