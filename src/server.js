@@ -14,6 +14,7 @@ import bankAccountRoutes from './routes/bankAccountRoutes.js';
 import billRoutes from './routes/billRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import importRoutes from './routes/importRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Resolve current directory for ESM
@@ -74,6 +75,7 @@ app.get('/', (req, res) => {
       bills: '/api/bills',
       notifications: '/api/notifications',
       import: '/api/import',
+      ai: '/api/ai',
     },
   });
 });
@@ -114,6 +116,7 @@ app.use('/api/bank-accounts', bankAccountRoutes);
 app.use('/api/bills', billRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/import', importRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Error Handling
 app.use(notFound);
