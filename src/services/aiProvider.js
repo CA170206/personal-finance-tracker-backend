@@ -1,6 +1,13 @@
 import { toolDefinitions, executeTool } from './aiTools.js';
 import { aiMemory } from './aiMemory.js';
 import { aiStore } from './aiStore.js';
+import {
+  classifyFinancialIntent,
+  resolveConversationContext,
+  computeMultiMonthSummary,
+  explainExpenseIncrease,
+  extractAmountAndItem,
+} from './aiReasoning.js';
 
 /**
  * Clean LLM Provider Abstraction
@@ -28,72 +35,421 @@ CORE OPERATING PRINCIPLES:
  * Analyzes natural language intent, dynamically selects and executes tools,
  * and formats comprehensive financial responses with interactive insight cards.
  */
-const runLocalOrchestrator = async ({ message, user, memoryContext, conversationId }) => {
-  const text = message.toLowerCase().trim();
+export const runLocalOrchestrator = async ({ message, user, memoryContext, conversationId }) => {
   const toolsExecuted = [];
   const insights = [];
   const proposals = [];
   let answer = '';
   let followUps = [];
 
-  // 1. AFFORDABILITY INTENT: "can I afford...", "can I buy...", "afford a ₹..."
-  if (
-    text.includes('afford') ||
-    text.includes('can i buy') ||
-    text.includes('should i buy') ||
-    text.includes('purchase of')
-  ) {
-    // Extract amount
-    const amtMatch = text.match(/(?:₹|rs\.?|inr)?\s*([0-9,]+(?:\.[0-9]{1,2})?)/i);
-    let amount = 0;
-    if (amtMatch && amtMatch[1]) {
-      amount = parseFloat(amtMatch[1].replace(/,/g, ''));
-    }
+  // 1. Fetch past conversation turns to preserve multi-turn context
+  const pastMessages = conversationId ? await aiStore.getMessages(user.id, conversationId) : [];
+  // Exclude current message (which was saved immediately before processAIChat)
+  const previousTurns = pastMessages.filter((m) => m.content !== message);
+  const context = resolveConversationContext(previousTurns);
 
-    if (amount > 0) {
-      const toolRes = await executeTool(
-        'analyzeAffordability',
-        { amount, itemDescription: message },
-        user.id,
-        conversationId
-      );
-      toolsExecuted.push({ tool: 'analyzeAffordability', args: { amount }, result: toolRes });
+  // 2. Classify natural language intent using semantic context
+  const parsed = classifyFinancialIntent(message, context);
+  console.log(`[AI Orchestrator] 🎯 Intent: ${parsed.intent}${parsed.isFollowUp ? ' (Context Follow-Up)' : ''}`);
 
-      insights.push({
-        type: 'affordability_meter',
-        title: `Affordability Assessment: ₹${amount.toLocaleString('en-IN')}`,
-        status: toolRes.status,
-        score: toolRes.score,
-        data: toolRes,
-      });
+  // -------------------------------------------------------------
+  // INTENT 1: WHERE DID MOST OF MY MONEY GO / SPENDING BREAKDOWN
+  // -------------------------------------------------------------
+  if (parsed.intent === 'WHERE_DID_MONEY_GO') {
+    const timeWin = parsed.timeWindow || { label: 'this month' };
+    const now = new Date();
+    const catArgs = timeWin.month !== undefined && timeWin.year !== undefined
+      ? { month: timeWin.month, year: timeWin.year }
+      : timeWin.startDate && timeWin.endDate
+      ? { startDate: timeWin.startDate, endDate: timeWin.endDate }
+      : { month: now.getMonth(), year: now.getFullYear() };
 
-      answer = `### Affordability Analysis for ₹${amount.toLocaleString('en-IN')}\n\n${toolRes.reason}\n\n` +
-        `- **Available Balance:** ₹${toolRes.availableFunds.toLocaleString('en-IN')}\n` +
-        `- **Reserved for Upcoming Bills:** ₹${toolRes.upcomingBillsAmount.toLocaleString('en-IN')}\n` +
-        `- **Projected Remaining Month Expenses:** ₹${toolRes.projectedRemainingSpend.toLocaleString('en-IN')}\n` +
-        `- **Safe Disposable Buffer After Purchase:** ₹${toolRes.surplusAfterPurchase.toLocaleString('en-IN')}\n\n` +
-        (toolRes.status === 'affordable'
-          ? `✅ **Verdict:** You can proceed comfortably without endangering upcoming payments.`
-          : toolRes.status === 'caution'
-          ? `⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.`
-          : `🛑 **Verdict:** Not recommended at this time, as it exceeds safe available reserves.`);
+    const [catRes, topTxsRes] = await Promise.all([
+      executeTool('getSpendingByCategory', catArgs, user.id, conversationId),
+      executeTool('searchTransactions', { type: 'expense', sortBy: 'amount', limit: 3, startDate: catArgs.startDate, endDate: catArgs.endDate }, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getSpendingByCategory', args: catArgs, result: catRes },
+      { tool: 'searchTransactions', args: { type: 'expense', sortBy: 'amount', limit: 3 }, result: topTxsRes }
+    );
+
+    insights.push({
+      type: 'category_breakdown_card',
+      title: `Where Your Money Went (${timeWin.label})`,
+      data: catRes,
+    });
+
+    const breakdown = catRes.breakdown || [];
+    const topCat = breakdown[0];
+    const secondCat = breakdown[1];
+    const thirdCat = breakdown[2];
+    const topTx = topTxsRes.transactions?.[0];
+
+    if (topCat) {
+      answer = `### Where Your Money Went (${timeWin.label})\n\n` +
+        `Based on your recorded transactions for **${timeWin.label}**, your highest spending category is **${topCat.category}** at **₹${topCat.amount.toLocaleString('en-IN')}**, accounting for **${topCat.percentage}%** of your total tracked expenses (₹${catRes.totalExpense.toLocaleString('en-IN')}).\n\n` +
+        `**Top Spending Categories:**\n` +
+        `• **${topCat.category}:** ₹${topCat.amount.toLocaleString('en-IN')} (${topCat.percentage}%)\n` +
+        (secondCat ? `• **${secondCat.category}:** ₹${secondCat.amount.toLocaleString('en-IN')} (${secondCat.percentage}%)\n` : '') +
+        (thirdCat ? `• **${thirdCat.category}:** ₹${thirdCat.amount.toLocaleString('en-IN')} (${thirdCat.percentage}%)\n` : '') +
+        (topTx ? `\n**Largest Single Expense:**\nYour biggest single debit was **${topTx.title}** (${topTx.category}) for **₹${Number(topTx.amount).toLocaleString('en-IN')}** on ${topTx.date}.\n\n` : '\n') +
+        `💡 **Recommendation:** Trimming ~₹${Math.round(topCat.amount * 0.15).toLocaleString('en-IN')} from ${topCat.category} would immediately improve your monthly savings.`;
 
       followUps = [
-        'How can I save more this month?',
-        'What are my upcoming bills?',
-        'Show my spending breakdown',
+        `Show all ${topCat.category} transactions`,
+        'Compare this month with last month',
+        'Which expenses can I reduce?',
       ];
     } else {
-      answer = `To evaluate affordability accurately, please specify the approximate cost of the item in Indian Rupees (₹). For example: *"Can I afford a ₹15,000 laptop?"*`;
-      followUps = ['Can I afford a ₹10,000 purchase?', 'What is my current net balance?'];
+      answer = `No expense transactions have been recorded for **${timeWin.label}**. Start by adding your recent purchases to track your spending breakdown.`;
+      followUps = ['Show my dashboard summary', 'Check upcoming bills'];
     }
   }
 
-  // 2. COMPARE MONTHS INTENT
-  else if (
-    text.includes('compare') ||
-    (text.includes('last month') && (text.includes('this month') || text.includes('vs') || text.includes('difference')))
-  ) {
+  // -------------------------------------------------------------
+  // INTENT 2: CATEGORY SPENDING (e.g. food last week, what about last month?)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'CATEGORY_SPENDING') {
+    const targetCategory = parsed.category || context.lastCategory || 'Food';
+    const timeWin = parsed.timeWindow || { label: 'this month' };
+
+    const searchArgs = {
+      category: targetCategory,
+      type: 'expense',
+      startDate: timeWin.startDate,
+      endDate: timeWin.endDate,
+      limit: 25,
+      sortBy: 'date',
+    };
+
+    const [txsRes, catRes] = await Promise.all([
+      executeTool('searchTransactions', searchArgs, user.id, conversationId),
+      executeTool('getSpendingByCategory', { startDate: timeWin.startDate, endDate: timeWin.endDate }, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'searchTransactions', args: searchArgs, result: txsRes },
+      { tool: 'getSpendingByCategory', args: {}, result: catRes }
+    );
+
+    const txs = txsRes.transactions || [];
+    const totalSpent = txs.reduce((sum, t) => sum + Number(t.amount || 0), 0);
+    const overallTotal = catRes.totalExpense || totalSpent;
+    const pct = overallTotal > 0 ? Number(((totalSpent / overallTotal) * 100).toFixed(1)) : 0;
+
+    insights.push({
+      type: 'recent_transactions_card',
+      title: `${targetCategory} Expenses (${timeWin.label})`,
+      data: { count: txs.length, transactions: txs },
+    });
+
+    if (totalSpent > 0) {
+      answer = `### ${targetCategory} Spending (${timeWin.label})\n\n` +
+        `You spent **₹${totalSpent.toLocaleString('en-IN')}** on **${targetCategory}** ${timeWin.label}` +
+        ` across **${txs.length}** recorded transaction${txs.length > 1 ? 's' : ''}` +
+        (pct > 0 ? ` (${pct}% of your total recorded expenses of ₹${overallTotal.toLocaleString('en-IN')}).` : '.') +
+        `\n\n` +
+        (txs.length > 0
+          ? `**Recent Debits:**\n` +
+            txs
+              .slice(0, 4)
+              .map((t) => `• **${t.title}**: ₹${Number(t.amount).toLocaleString('en-IN')} on ${t.date}`)
+              .join('\n')
+          : '');
+
+      followUps = [
+        `Why did ${targetCategory} spending change?`,
+        'What about last month?',
+        'Which expenses can I reduce?',
+      ];
+    } else {
+      answer = `You had **zero recorded expenses** in **${targetCategory}** ${timeWin.label}.\n\nTotal tracked expenses across all categories for this period was **₹${overallTotal.toLocaleString('en-IN')}**.`;
+      followUps = [
+        'Where did most of my money go this month?',
+        'Show top 5 largest transactions',
+        'Compare this month with last month',
+      ];
+    }
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 3: WHY DID EXPENSES INCREASE (Causal Analysis)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'WHY_EXPENSES_INCREASED') {
+    const targetCat = parsed.category || context.lastCategory || null;
+    const causal = await explainExpenseIncrease(user.id, conversationId, targetCat);
+
+    toolsExecuted.push({ tool: 'compareMonthlySpending', args: {}, result: causal.comparison });
+
+    insights.push({
+      type: 'comparison_card',
+      title: targetCat ? `${targetCat} Spending Surge Analysis` : 'Monthly Expense Surge Drivers',
+      data: causal.comparison,
+    });
+
+    if (causal.type === 'category' && targetCat) {
+      answer = `### Root Cause: Why ${targetCat} Spending Increased\n\n` +
+        `Your spending on **${targetCat}** rose by **₹${Math.abs(causal.difference).toLocaleString('en-IN')}** (**${causal.percentageChange > 0 ? '+' : ''}${causal.percentageChange}%**) compared to last month` +
+        ` (₹${causal.currentTotal.toLocaleString('en-IN')} this month vs ₹${causal.previousTotal.toLocaleString('en-IN')} last month).\n\n` +
+        (causal.topTransactions && causal.topTransactions.length > 0
+          ? `**Primary Spending Drivers:**\n` +
+            causal.topTransactions
+              .map((t) => `• **${t.title}**: ₹${Number(t.amount).toLocaleString('en-IN')} on ${t.date}`)
+              .join('\n') + `\n\n`
+          : '') +
+        `💡 **Recommendation:** Setting a monthly ${targetCat} limit of ₹${Math.round((causal.previousTotal || causal.currentTotal * 0.8) * 1.1).toLocaleString('en-IN')} would help prevent future overages.`;
+
+      followUps = [
+        `Set a budget for ${targetCat}`,
+        'Which expenses can I reduce?',
+        'What are my five largest transactions?',
+      ];
+    } else {
+      const isUp = causal.difference > 0;
+      answer = `### Analysis: Expense Drivers & Trends\n\n` +
+        `Your recorded monthly expenses ${isUp ? 'increased' : 'changed'} by **₹${Math.abs(causal.difference).toLocaleString('en-IN')}** (**${causal.percentageChange > 0 ? '+' : ''}${causal.percentageChange}%**) compared to last month.\n\n` +
+        (causal.spikingCategories && causal.spikingCategories.length > 0
+          ? `**Key Categories Driving the Surge:**\n` +
+            causal.spikingCategories
+              .map((c) => `• **${c.category}**: +₹${c.difference.toLocaleString('en-IN')} (+${c.percentageChange}%) to ₹${c.current.toLocaleString('en-IN')}`)
+              .join('\n') + `\n\n`
+          : '') +
+        (causal.largestRecentExpenses && causal.largestRecentExpenses.length > 0
+          ? `**Largest Recent Transactions:**\n` +
+            causal.largestRecentExpenses
+              .map((t) => `• **${t.title}** (${t.category}): ₹${Number(t.amount).toLocaleString('en-IN')} on ${t.date}`)
+              .join('\n') + `\n\n`
+          : '') +
+        `💡 **Action Step:** Review discretionary spending in ${causal.spikingCategories?.[0]?.category || 'top categories'} to curb further expansion.`;
+
+      followUps = [
+        'Which expenses can I reduce?',
+        `What about ${causal.spikingCategories?.[0]?.category || 'Food'}?`,
+        'Show my top 5 largest transactions',
+      ];
+    }
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 4: AM I SPENDING TOO MUCH COMPARED TO MY INCOME?
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'INCOME_VS_EXPENSES') {
+    const summary = await executeTool('getDashboardSummary', {}, user.id, conversationId);
+    toolsExecuted.push({ tool: 'getDashboardSummary', args: {}, result: summary });
+
+    insights.push({
+      type: 'financial_health_card',
+      title: 'Income vs Expense Cash Flow',
+      data: summary,
+    });
+
+    const income = summary.totalIncome || 0;
+    const expenses = summary.totalExpenses || 0;
+    const ratio = income > 0 ? Number(((expenses / income) * 100).toFixed(1)) : 100;
+    const savingsRate = summary.savingsRate || 0;
+
+    let verdict = '';
+    let advice = '';
+    if (ratio <= 50) {
+      verdict = `✅ **Excellent Cash Flow:** You are spending only **${ratio}%** of your recorded income, retaining a high savings rate of **${savingsRate}%**.`;
+      advice = 'Your spending is comfortably below the standard 50% needs ceiling of the 50/30/20 rule. Consider allocating extra surplus into long-term investments or emergency reserves.';
+    } else if (ratio <= 75) {
+      verdict = `⚠️ **Moderate Balance:** You are spending **${ratio}%** of your recorded income, saving **${savingsRate}%**.`;
+      advice = 'You are maintaining a positive surplus, but approaching the upper threshold. Monitoring discretionary dining and shopping will keep your savings safe.';
+    } else if (ratio <= 100) {
+      verdict = `🚨 **High Spending Alert:** You are consuming **${ratio}%** of your income, leaving very little savings buffer (${savingsRate}%).`;
+      advice = 'Expenses are running close to total earnings. Trimming non-essential subscriptions and shopping is recommended immediately.';
+    } else {
+      verdict = `🛑 **Deficit Warning:** Your expenses exceed recorded income by ₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}.`;
+      advice = 'You are in a net-negative cashflow position. Immediate budget reductions are necessary to avoid drawing on debt or emergency funds.';
+    }
+
+    answer = `### Cash Flow Evaluation: Spending vs Income\n\n${verdict}\n\n` +
+      `- **Total Recorded Income:** ₹${income.toLocaleString('en-IN')}\n` +
+      `- **Total Recorded Expenses:** ₹${expenses.toLocaleString('en-IN')}\n` +
+      `- **Net Surplus Remaining:** **₹${summary.totalBalance.toLocaleString('en-IN')}**\n` +
+      `- **Net Savings Rate:** **${savingsRate}%**\n` +
+      `- **Expense-to-Income Ratio:** **${ratio}%**\n\n` +
+      `💡 **50/30/20 Guideline:**\n${advice}`;
+
+    followUps = [
+      'How much can I save this month?',
+      'Where did most of my money go this month?',
+      'Which expenses can I reduce?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 5: HOW MUCH CAN I SAVE THIS MONTH? (Savings Capacity)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'SAVINGS_CAPACITY') {
+    const [summary, proj, opps] = await Promise.all([
+      executeTool('getDashboardSummary', {}, user.id, conversationId),
+      executeTool('estimateMonthEndSpending', {}, user.id, conversationId),
+      executeTool('identifySavingsOpportunities', {}, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getDashboardSummary', args: {}, result: summary },
+      { tool: 'estimateMonthEndSpending', args: {}, result: proj },
+      { tool: 'identifySavingsOpportunities', args: {}, result: opps }
+    );
+
+    insights.push({
+      type: 'projection_card',
+      title: 'Projected Savings Capacity',
+      data: proj,
+    });
+
+    const income = summary.totalIncome || 0;
+    const projectedExp = proj.projectedTotalExpense || summary.totalExpenses || 0;
+    const estSavings = Math.max(0, income - projectedExp);
+    const estSavingsRate = income > 0 ? Math.round((estSavings / income) * 100) : 0;
+
+    answer = `### Monthly Savings Capacity Forecast\n\n` +
+      `Based on your daily average burn rate of **₹${proj.dailyBurnRate.toLocaleString('en-IN')}/day** across ${proj.currentDay} days elapsed:\n\n` +
+      `- **Total Monthly Income:** ₹${income.toLocaleString('en-IN')}\n` +
+      `- **Current Spent So Far:** ₹${proj.actualExpenseSoFar.toLocaleString('en-IN')}\n` +
+      `- **Projected Month-End Outflow:** **₹${projectedExp.toLocaleString('en-IN')}**\n` +
+      `- **Estimated Baseline Net Savings:** **₹${estSavings.toLocaleString('en-IN')}** (~${estSavingsRate}% savings rate)\n\n` +
+      (opps.length > 0
+        ? `**Potential Extra Trims Identified:**\n` +
+          opps.slice(0, 2).map((o) => `• **${o.category}**: ${o.recommendation}`).join('\n') + `\n\n`
+        : '') +
+      `💡 **Verdict:** You have the capacity to safely set aside **₹${estSavings.toLocaleString('en-IN')}** this month without compromising routine living expenses.`;
+
+    followUps = [
+      'Which expenses can I reduce?',
+      'Can I afford a planned purchase?',
+      'Show my recurring subscriptions',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 6: WHICH EXPENSES CAN I REDUCE?
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'REDUCE_EXPENSES') {
+    const [opps, rec, catRes] = await Promise.all([
+      executeTool('identifySavingsOpportunities', {}, user.id, conversationId),
+      executeTool('detectRecurringExpenses', {}, user.id, conversationId),
+      executeTool('getSpendingByCategory', {}, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'identifySavingsOpportunities', args: {}, result: opps },
+      { tool: 'detectRecurringExpenses', args: {}, result: rec },
+      { tool: 'getSpendingByCategory', args: {}, result: catRes }
+    );
+
+    insights.push({
+      type: 'savings_opportunities_card',
+      title: 'Actionable Cost-Reduction Plan',
+      data: opps,
+    });
+
+    const topDiscretionary = (catRes.breakdown || []).filter(
+      (b) => ['Food', 'Dining', 'Shopping', 'Entertainment', 'Travel'].includes(b.category)
+    );
+
+    answer = `### Actionable Expense Reduction Plan\n\n` +
+      `To optimize your monthly surplus, here are targeted areas where you can trim spending with minimal lifestyle friction:\n\n` +
+      (opps && opps.length > 0
+        ? opps.map((o) => `🎯 **${o.category}**: ${o.recommendation}`).join('\n\n') + '\n\n'
+        : '') +
+      (rec.items && rec.items.length > 0
+        ? `**Recurring Subscriptions to Review:**\n` +
+          rec.items.slice(0, 3).map((r) => `• **${r.title}**: ₹${r.amount.toLocaleString('en-IN')}/mo (audit if still actively used)`).join('\n') + '\n\n'
+        : '') +
+      (topDiscretionary.length > 0
+        ? `**Discretionary Spending Targets:**\n` +
+          topDiscretionary.slice(0, 2).map((d) => `• **${d.category}** (₹${d.amount.toLocaleString('en-IN')} total): Aim for a 15% reduction to save ~₹${Math.round(d.amount * 0.15).toLocaleString('en-IN')}/month.`).join('\n')
+        : '');
+
+    followUps = [
+      'How much can I save this month?',
+      'Set a monthly food budget of ₹6,000',
+      'What are my recurring subscriptions?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 7: TOP TRANSACTIONS (e.g. what are my five largest transactions?)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'TOP_TRANSACTIONS') {
+    const limit = parsed.limit || 5;
+    const type = parsed.type || 'expense';
+
+    const searchRes = await executeTool(
+      'searchTransactions',
+      { type, sortBy: 'amount', limit },
+      user.id,
+      conversationId
+    );
+    toolsExecuted.push({ tool: 'searchTransactions', args: { type, sortBy: 'amount', limit }, result: searchRes });
+
+    insights.push({
+      type: 'recent_transactions_card',
+      title: `Top ${limit} Largest ${type === 'expense' ? 'Expenses' : 'Transactions'}`,
+      data: searchRes,
+    });
+
+    const txs = searchRes.transactions || [];
+    answer = `### Top ${limit} Largest ${type === 'expense' ? 'Recorded Expenses' : 'Transactions'}\n\n` +
+      (txs.length > 0
+        ? txs
+            .map((t, idx) => `${idx + 1}. **${t.title}** (${t.category || 'General'}): **₹${Number(t.amount).toLocaleString('en-IN')}** on ${t.date}`)
+            .join('\n') + `\n\n` +
+          `Total of these ${txs.length} transactions: **₹${txs.reduce((sum, t) => sum + Number(t.amount || 0), 0).toLocaleString('en-IN')}**.`
+        : `No transactions found in your records.`);
+
+    followUps = [
+      'Where did most of my money go this month?',
+      'Which expenses can I reduce?',
+      'Compare this month with last month',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 8: MULTI-MONTH TREND (e.g. last 3 months)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'MULTI_MONTH_TREND') {
+    const monthsCount = parsed.monthsCount || 3;
+    const multiData = await computeMultiMonthSummary(user.id, conversationId, monthsCount);
+
+    const comp = await executeTool('compareMonthlySpending', {}, user.id, conversationId);
+    toolsExecuted.push({ tool: 'compareMonthlySpending', args: {}, result: comp });
+
+    insights.push({
+      type: 'comparison_card',
+      title: `${monthsCount}-Month Cash Flow Trend`,
+      data: { periods: multiData, comparison: comp },
+    });
+
+    answer = `### ${monthsCount}-Month Cash Flow Comparison\n\n` +
+      `Here is your month-by-month income, expense, and savings trajectory:\n\n` +
+      multiData
+        .map(
+          (m) =>
+            `**${m.monthLabel}:**\n` +
+            `• Income: ₹${m.income.toLocaleString('en-IN')} | Expenses: ₹${m.expense.toLocaleString('en-IN')}\n` +
+            `• Net Savings: **₹${m.netSavings.toLocaleString('en-IN')}** (Savings Rate: **${m.savingsRate}%**)\n` +
+            (m.topCategory ? `• Top Category: ${m.topCategory.name} (₹${m.topCategory.amount.toLocaleString('en-IN')})\n` : '')
+        )
+        .join('\n') +
+      `\n💡 **Trajectory:** Your net savings rate is currently **${comp.percentageChange > 0 ? 'expanding' : 'stabilizing'}** across periods.`;
+
+    followUps = [
+      'Why are my expenses increasing?',
+      'How much can I save this month?',
+      'Show my category breakdown',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 9: MONTHLY COMPARISON (e.g. this month vs last month)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'MONTHLY_COMPARISON') {
     const comp = await executeTool('compareMonthlySpending', {}, user.id, conversationId);
     toolsExecuted.push({ tool: 'compareMonthlySpending', args: {}, result: comp });
 
@@ -125,45 +481,105 @@ const runLocalOrchestrator = async ({ message, user, memoryContext, conversation
     ];
   }
 
-  // 3. PROPOSE ACTION INTENT: "create budget", "set budget of ₹..."
-  else if (
-    (text.includes('budget') && (text.includes('create') || text.includes('set') || text.includes('make')))
-  ) {
-    const amtMatch = text.match(/(?:₹|rs\.?|inr)?\s*([0-9,]+)/i);
-    const amount = amtMatch ? parseFloat(amtMatch[1].replace(/,/g, '')) : 5000;
+  // -------------------------------------------------------------
+  // INTENT 10: PURCHASE AFFORDABILITY (e.g. Can I afford a new phone worth ₹25,000?)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'AFFORDABILITY') {
+    const { amount, item } = parsed.amount > 0 ? parsed : extractAmountAndItem(message);
 
-    // Detect category
-    const categories = ['Food', 'Groceries', 'Entertainment', 'Shopping', 'Travel', 'Bills', 'Utilities', 'Housing'];
-    let matchedCat = 'Food';
-    for (const c of categories) {
-      if (text.includes(c.toLowerCase())) {
-        matchedCat = c;
-        break;
-      }
+    if (amount > 0) {
+      const toolRes = await executeTool(
+        'analyzeAffordability',
+        { amount, itemDescription: item || message },
+        user.id,
+        conversationId
+      );
+      toolsExecuted.push({ tool: 'analyzeAffordability', args: { amount }, result: toolRes });
+
+      insights.push({
+        type: 'affordability_meter',
+        title: `Affordability Assessment: ₹${amount.toLocaleString('en-IN')}`,
+        status: toolRes.status,
+        score: toolRes.score,
+        data: toolRes,
+      });
+
+      answer = `### Affordability Analysis for ${item} (₹${amount.toLocaleString('en-IN')})\n\n${toolRes.reason}\n\n` +
+        `- **Available Balance:** ₹${toolRes.availableFunds.toLocaleString('en-IN')}\n` +
+        `- **Reserved for Upcoming Bills:** ₹${toolRes.upcomingBillsAmount.toLocaleString('en-IN')}\n` +
+        `- **Projected Remaining Month Expenses:** ₹${toolRes.projectedRemainingSpend.toLocaleString('en-IN')}\n` +
+        `- **Safe Disposable Buffer After Purchase:** ₹${toolRes.surplusAfterPurchase.toLocaleString('en-IN')}\n\n` +
+        (toolRes.status === 'affordable'
+          ? `✅ **Verdict:** You can proceed comfortably without endangering upcoming payments.`
+          : toolRes.status === 'caution'
+          ? `⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.`
+          : `🛑 **Verdict:** Not recommended at this time, as it exceeds safe available reserves.`);
+
+      followUps = [
+        'How can I save more this month?',
+        'What are my upcoming bills?',
+        'Show my spending breakdown',
+      ];
+    } else {
+      answer = `To evaluate affordability accurately, please specify the approximate cost of the item in Indian Rupees (₹). For example: *"Can I afford a new phone worth ₹25,000?"*`;
+      followUps = ['Can I afford a ₹10,000 purchase?', 'What is my current net balance?'];
     }
-
-    const prop = await executeTool(
-      'proposeAction',
-      {
-        actionType: 'create_budget',
-        details: { category: matchedCat, allocated: amount, name: `${matchedCat} Budget` },
-        summary: `Set monthly ${matchedCat} budget limit to ₹${amount.toLocaleString('en-IN')}`,
-      },
-      user.id,
-      conversationId
-    );
-    toolsExecuted.push({ tool: 'proposeAction', args: { actionType: 'create_budget' }, result: prop });
-    proposals.push(prop);
-
-    answer = `I have prepared a proposed budget update for you:\n\n` +
-      `🎯 **Action:** Set monthly **${matchedCat}** budget limit to **₹${amount.toLocaleString('en-IN')}**.\n\n` +
-      `To ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.`;
-
-    followUps = ['Show current budgets', 'Show food spending this month'];
   }
 
-  // 4. BILLS & UTILITIES INTENT
-  else if (text.includes('bill') || text.includes('utility') || text.includes('due') || text.includes('recharge')) {
+  // -------------------------------------------------------------
+  // INTENT 11: EXPLAIN MY CURRENT FINANCIAL SITUATION (Holistic Diagnostic)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'EXPLAIN_FINANCIAL_SITUATION') {
+    const [summary, budgetsRes, billsRes, anomaliesRes] = await Promise.all([
+      executeTool('getDashboardSummary', {}, user.id, conversationId),
+      executeTool('getBudgets', {}, user.id, conversationId),
+      executeTool('getBills', { status: 'all' }, user.id, conversationId),
+      executeTool('detectAnomalousExpenses', {}, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getDashboardSummary', args: {}, result: summary },
+      { tool: 'getBudgets', args: {}, result: budgetsRes },
+      { tool: 'getBills', args: {}, result: billsRes },
+      { tool: 'detectAnomalousExpenses', args: {}, result: anomaliesRes }
+    );
+
+    insights.push({
+      type: 'financial_health_card',
+      title: 'Comprehensive Financial Health Report',
+      data: summary,
+    });
+
+    const pendingBills = (billsRes.bills || []).filter((b) => b.status === 'pending' || b.status === 'overdue');
+    const overBudgets = (budgetsRes.budgets || []).filter((b) => b.spent > b.allocated);
+
+    answer = `### Comprehensive Financial Situation Report\n\n` +
+      `Hello ${user.name || 'there'}! Here is an objective diagnostic of your current financial standing:\n\n` +
+      `**1. Cash Flow & Liquidity:**\n` +
+      `- **Total Recorded Income:** ₹${summary.totalIncome.toLocaleString('en-IN')}\n` +
+      `- **Total Tracked Expenses:** ₹${summary.totalExpenses.toLocaleString('en-IN')}\n` +
+      `- **Net Cash Balance:** **₹${summary.totalBalance.toLocaleString('en-IN')}**\n` +
+      `- **Net Savings Rate:** **${summary.savingsRate}%** (${summary.savingsRate >= 50 ? 'Strong & Healthy' : 'Moderate'})\n\n` +
+      `**2. Obligations & Liabilities:**\n` +
+      `- **Pending Bills:** **₹${billsRes.pendingTotal.toLocaleString('en-IN')}** across ${pendingBills.length} upcoming bill${pendingBills.length !== 1 ? 's' : ''}.\n\n` +
+      `**3. Budget Adherence:**\n` +
+      (overBudgets.length > 0
+        ? `⚠️ ${overBudgets.length} category budget${overBudgets.length > 1 ? 's' : ''} currently exceeded (${overBudgets.map((b) => b.category).join(', ')}).\n\n`
+        : `✅ All active category budgets are within their allocated spending ceilings.\n\n`) +
+      `**4. Strategic Guidance:**\n` +
+      `Your cash flow maintains a healthy surplus. Focus on clearing the ₹${billsRes.pendingTotal.toLocaleString('en-IN')} pending bill reserve while maintaining your ${summary.savingsRate}% savings trajectory.`;
+
+    followUps = [
+      'Where did most of my money go this month?',
+      'Can I afford a ₹15,000 purchase?',
+      'Show my pending bills',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 12: BILLS AND UTILITIES
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'BILLS_AND_UTILITIES') {
     const billsRes = await executeTool('getBills', { status: 'all' }, user.id, conversationId);
     toolsExecuted.push({ tool: 'getBills', args: {}, result: billsRes });
 
@@ -192,8 +608,10 @@ const runLocalOrchestrator = async ({ message, user, memoryContext, conversation
     ];
   }
 
-  // 5. RECURRING SUBSCRIPTIONS & COMMITED EXPENSES
-  else if (text.includes('recurring') || text.includes('subscription') || text.includes('repeat')) {
+  // -------------------------------------------------------------
+  // INTENT 13: RECURRING SUBSCRIPTIONS
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'RECURRING_SUBSCRIPTIONS') {
     const recRes = await executeTool('detectRecurringExpenses', {}, user.id, conversationId);
     toolsExecuted.push({ tool: 'detectRecurringExpenses', args: {}, result: recRes });
 
@@ -212,153 +630,342 @@ const runLocalOrchestrator = async ({ message, user, memoryContext, conversation
         : 'No clear recurring patterns detected in recent transactions.');
 
     followUps = [
-      'Where can I save money?',
+      'Which expenses can I reduce?',
       'Show my bills',
       'What is my monthly burn rate?',
     ];
   }
 
-  // 6. BIGGEST / TOP EXPENSES: "what were my biggest expenses", "largest expenses", "top expenses"
-  else if (
-    text.includes('biggest') ||
-    text.includes('largest') ||
-    text.includes('highest') ||
-    text.includes('top expense') ||
-    text.includes('most expensive')
-  ) {
-    const searchRes = await executeTool(
-      'searchTransactions',
-      { type: 'expense', sortBy: 'amount', limit: 5 },
+  // -------------------------------------------------------------
+  // INTENT 14: PROPOSE ACTION (Create budget)
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'PROPOSE_ACTION') {
+    const amount = parsed.amount || 5000;
+    const category = parsed.category || 'Food';
+
+    const prop = await executeTool(
+      'proposeAction',
+      {
+        actionType: 'create_budget',
+        details: { category, allocated: amount, name: `${category} Budget` },
+        summary: `Set monthly ${category} budget limit to ₹${amount.toLocaleString('en-IN')}`,
+      },
       user.id,
       conversationId
     );
-    toolsExecuted.push({ tool: 'searchTransactions', args: { type: 'expense', sortBy: 'amount', limit: 5 }, result: searchRes });
+    toolsExecuted.push({ tool: 'proposeAction', args: { actionType: 'create_budget' }, result: prop });
+    proposals.push(prop);
+
+    answer = `I have prepared a proposed budget update for you:\n\n` +
+      `🎯 **Action:** Set monthly **${category}** budget limit to **₹${amount.toLocaleString('en-IN')}**.\n\n` +
+      `To ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.`;
+
+    followUps = ['Show current budgets', `Show ${category.toLowerCase()} spending this month`];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 15: BANK BALANCES
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'BANK_BALANCES') {
+    const bankRes = await executeTool('getBankAccounts', {}, user.id, conversationId);
+    toolsExecuted.push({ tool: 'getBankAccounts', args: {}, result: bankRes });
 
     insights.push({
-      type: 'recent_transactions_card',
-      title: 'Top Recorded Expenses',
-      data: searchRes,
+      type: 'bank_accounts_card',
+      title: 'Recorded Bank Accounts',
+      data: bankRes,
     });
 
-    const txs = searchRes.transactions || [];
-    answer = `### Top Recorded Expenses\n\n` +
-      `Here are your largest recorded expenses:\n\n` +
-      (txs.length > 0
-        ? txs
-            .map((t, idx) => `${idx + 1}. **${t.title}** (${t.category}): **₹${Number(t.amount).toLocaleString('en-IN')}** on ${t.date}`)
-            .join('\n')
-        : 'No expense transactions recorded yet.');
+    const accounts = bankRes.accounts || [];
+    answer = `### Recorded Bank Account Balances\n\n` +
+      `You have **${accounts.length}** recorded bank account${accounts.length !== 1 ? 's' : ''} with a combined balance of **₹${bankRes.totalBalance.toLocaleString('en-IN')}**:\n\n` +
+      (accounts.length > 0
+        ? accounts
+            .map((a) => `• **${a.bank_name}** (${a.account_type}): ₹${Number(a.balance).toLocaleString('en-IN')}`)
+            .join('\n') + `\n\n`
+        : 'No bank accounts recorded yet.\n\n') +
+      `*Note: Balances shown are user-recorded figures from your FinTrack ledger.*`;
 
     followUps = [
-      'Show my category breakdown',
-      'Where can I save money?',
-      'Compare this month with last month',
+      'Am I spending too much compared to my income?',
+      'Can I afford a ₹10,000 purchase?',
+      'Show my pending bills',
     ];
   }
 
-  // 7. SPENDING BY CATEGORY: "how much did I spend on...", "breakdown", "food"
-  else if (
-    text.includes('category') ||
-    text.includes('breakdown') ||
-    text.includes('spend on') ||
-    text.includes('spent on') ||
-    text.includes('food') ||
-    text.includes('groceries') ||
-    text.includes('travel') ||
-    text.includes('shopping')
-  ) {
-    const isThisMonth = text.includes('this month') || text.includes('current month');
-    const now = new Date();
-    const catArgs = isThisMonth ? { month: now.getMonth(), year: now.getFullYear() } : {};
-    const catRes = await executeTool('getSpendingByCategory', catArgs, user.id, conversationId);
-    toolsExecuted.push({ tool: 'getSpendingByCategory', args: catArgs, result: catRes });
+  // -------------------------------------------------------------
+  // INTENT 16: NEGATIVE BALANCE EXPLANATION
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'NEGATIVE_BALANCE') {
+    const [summary, txsRes] = await Promise.all([
+      executeTool('getDashboardSummary', {}, user.id, conversationId),
+      executeTool('searchTransactions', { type: 'expense', limit: 5 }, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getDashboardSummary', args: {}, result: summary },
+      { tool: 'searchTransactions', args: { type: 'expense', limit: 5 }, result: txsRes }
+    );
 
     insights.push({
-      type: 'category_breakdown_card',
-      title: 'Expense Breakdown by Category',
-      data: catRes,
+      type: 'financial_health_card',
+      title: 'Ledger Deficit Diagnostic',
+      data: summary,
     });
 
-    // Check if user named a specific category
-    const specificCategories = ['food', 'groceries', 'entertainment', 'travel', 'shopping', 'utilities', 'bills'];
-    const matched = specificCategories.find((c) => text.includes(c));
+    const isDeficit = summary.totalBalance < 0;
+    const topDebits = txsRes.transactions || [];
 
-    if (matched) {
-      const matchItem = (catRes.breakdown || []).find((b) => b.category.toLowerCase().includes(matched));
-      if (matchItem) {
-        answer = `### Spending in ${matchItem.category}\n\n` +
-          `You have spent **₹${matchItem.amount.toLocaleString('en-IN')}** on **${matchItem.category}**, which accounts for **${matchItem.percentage}%** of your total tracked expenses (₹${catRes.totalExpense.toLocaleString('en-IN')}).`;
-      } else {
-        answer = `No transactions found under "${matched}" in your recorded history. Total tracked expenses across all categories are **₹${catRes.totalExpense.toLocaleString('en-IN')}**.`;
-      }
+    if (isDeficit) {
+      answer = `### Why Your Balance is Negative (Deficit Analysis)\n\n` +
+        `Your current recorded ledger balance is **-₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}**. Here is the breakdown of why this occurred:\n\n` +
+        `1. **Recorded Income: ₹${summary.totalIncome.toLocaleString('en-IN')}**\n` +
+        (summary.totalIncome === 0
+          ? `   *Notice:* No income transactions (salary, freelance, or transfers) have been logged yet in your account.\n`
+          : `   Your total logged deposits are lower than your outgoing payments.\n`) +
+        `2. **Total Tracked Expenses: ₹${summary.totalExpenses.toLocaleString('en-IN')}**\n` +
+        `   You have recorded debits totaling ₹${summary.totalExpenses.toLocaleString('en-IN')}.\n` +
+        `3. **Net Cashflow Deficit:**\n` +
+        `   Since expenses (₹${summary.totalExpenses.toLocaleString('en-IN')}) exceed income (₹${summary.totalIncome.toLocaleString('en-IN')}), your ledger currently stands at **-₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}**.\n\n` +
+        (topDebits.length > 0
+          ? `**Recent Expenses Contributing to Deficit:**\n` +
+            topDebits.slice(0, 4).map((t) => `• **${t.title}** (${t.category}): ₹${Number(t.amount).toLocaleString('en-IN')}`).join('\n') + `\n\n`
+          : '') +
+        `💡 **How to Balance Your Account:**\n` +
+        `• Log your monthly salary or deposits in **Transactions** (+ Add Transaction → Type: Income).\n` +
+        `• Or review the expenses listed above to verify their accuracy.`;
     } else {
-      answer = `### Category Expense Breakdown\n\n` +
-        `Total tracked expenses are **₹${catRes.totalExpense.toLocaleString('en-IN')}** across ${catRes.categoriesCount} categories:\n\n` +
-        (catRes.breakdown || [])
-          .slice(0, 5)
-          .map((b) => `• **${b.category}:** ₹${b.amount.toLocaleString('en-IN')} (${b.percentage}%)`)
-          .join('\n');
+      answer = `### Balance Status: Positive Surplus\n\n` +
+        `Great news! Your recorded balance is currently **positive** at **₹${summary.totalBalance.toLocaleString('en-IN')}** (Total Income: ₹${summary.totalIncome.toLocaleString('en-IN')}, Expenses: ₹${summary.totalExpenses.toLocaleString('en-IN')}). You do not currently have a negative balance.`;
     }
 
     followUps = [
+      'Where did most of my money go this month?',
+      'What are my five largest transactions?',
+      'Which expenses can I reduce?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 17: NET BALANCE
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'NET_BALANCE') {
+    const [summary, bankRes] = await Promise.all([
+      executeTool('getDashboardSummary', {}, user.id, conversationId),
+      executeTool('getBankAccounts', {}, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getDashboardSummary', args: {}, result: summary },
+      { tool: 'getBankAccounts', args: {}, result: bankRes }
+    );
+
+    insights.push({
+      type: 'financial_health_card',
+      title: 'Current Net Balance',
+      data: summary,
+    });
+
+    const isDeficit = summary.totalBalance < 0;
+    answer = `### Current Net Balance: **${isDeficit ? `-₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}` : `₹${summary.totalBalance.toLocaleString('en-IN')}`}**\n\n` +
+      `- **Total Recorded Income:** ₹${summary.totalIncome.toLocaleString('en-IN')}\n` +
+      `- **Total Tracked Expenses:** ₹${summary.totalExpenses.toLocaleString('en-IN')}\n` +
+      `- **Cash Flow Status:** ${isDeficit ? `⚠️ Net Deficit of ₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}` : `✅ Surplus of ₹${summary.totalBalance.toLocaleString('en-IN')}`}\n` +
+      `- **Savings Rate:** ${summary.savingsRate}%\n\n` +
+      (bankRes.totalBalance > 0
+        ? `Additionally, your recorded bank accounts hold a combined total of **₹${bankRes.totalBalance.toLocaleString('en-IN')}** across ${bankRes.accounts.length} account(s).`
+        : `*Track your bank deposits by logging income transactions or bank accounts.*`);
+
+    followUps = [
+      'Where did most of my money go this month?',
+      'Why is my balance negative?',
+      'What are my five largest transactions?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 18: TOTAL EXPENSES
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'TOTAL_EXPENSES') {
+    const timeWin = parsed.timeWindow || { label: 'this month' };
+    const [catRes, txsRes] = await Promise.all([
+      executeTool('getSpendingByCategory', { startDate: timeWin.startDate, endDate: timeWin.endDate }, user.id, conversationId),
+      executeTool('searchTransactions', { type: 'expense', startDate: timeWin.startDate, endDate: timeWin.endDate, limit: 5 }, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getSpendingByCategory', args: {}, result: catRes },
+      { tool: 'searchTransactions', args: {}, result: txsRes }
+    );
+
+    insights.push({
+      type: 'category_breakdown_card',
+      title: `Expense Breakdown (${timeWin.label})`,
+      data: catRes,
+    });
+
+    const total = catRes.totalExpense || 0;
+    const breakdown = catRes.breakdown || [];
+
+    answer = `### Total Expenses (${timeWin.label}): **₹${total.toLocaleString('en-IN')}**\n\n` +
+      `You have spent **₹${total.toLocaleString('en-IN')}** across **${catRes.totalTransactions}** transaction(s) ${timeWin.label}.\n\n` +
+      (breakdown.length > 0
+        ? `**Top Categories:**\n` +
+          breakdown.slice(0, 4).map((b) => `• **${b.category}:** ₹${b.amount.toLocaleString('en-IN')} (${b.percentage}%)`).join('\n') + `\n\n`
+        : '') +
+      (txsRes.transactions?.length > 0
+        ? `**Recent Debits:**\n` +
+          txsRes.transactions.slice(0, 3).map((t) => `• **${t.title}**: ₹${Number(t.amount).toLocaleString('en-IN')} (${t.date})`).join('\n')
+        : '');
+
+    followUps = [
+      'Which expenses can I reduce?',
+      'What are my five largest transactions?',
       'Compare this month with last month',
-      'Can I afford a ₹5,000 purchase?',
-      'Show my budgets',
     ];
   }
 
-  // 7. SAVINGS OPPORTUNITIES & OPTIMIZATION
-  else if (text.includes('save') || text.includes('cut') || text.includes('opportunity') || text.includes('reduce')) {
-    const opps = await executeTool('identifySavingsOpportunities', {}, user.id, conversationId);
-    toolsExecuted.push({ tool: 'identifySavingsOpportunities', args: {}, result: opps });
+  // -------------------------------------------------------------
+  // INTENT 19: TOTAL INCOME
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'TOTAL_INCOME') {
+    const timeWin = parsed.timeWindow || { label: 'this month' };
+    const [summary, incomeTxs] = await Promise.all([
+      executeTool('getDashboardSummary', {}, user.id, conversationId),
+      executeTool('searchTransactions', { type: 'income', startDate: timeWin.startDate, endDate: timeWin.endDate, limit: 10 }, user.id, conversationId),
+    ]);
+
+    toolsExecuted.push(
+      { tool: 'getDashboardSummary', args: {}, result: summary },
+      { tool: 'searchTransactions', args: { type: 'income' }, result: incomeTxs }
+    );
 
     insights.push({
-      type: 'savings_opportunities_card',
-      title: 'Personalized Savings Strategies',
-      data: opps,
+      type: 'financial_health_card',
+      title: `Income Overview (${timeWin.label})`,
+      data: summary,
     });
 
-    answer = `### Actionable Savings Opportunities\n\n` +
-      (opps.length > 0
-        ? opps.map((o) => `💡 **${o.category}**: ${o.recommendation}`).join('\n\n')
-        : 'Your spending is currently well-balanced with no critical overruns detected! Continue monitoring your budgets to build long-term savings.');
+    const totalIncome = summary.totalIncome || 0;
+    const txs = incomeTxs.transactions || [];
+
+    if (totalIncome === 0) {
+      answer = `### Recorded Income (${timeWin.label}): **₹0**\n\n` +
+        `No income transactions have been logged for ${timeWin.label} yet.\n\n` +
+        `To track your net savings rate and maintain an accurate ledger:\n` +
+        `• Add your salary, freelance earnings, or deposits under **Transactions** (+ Add Transaction → Type: Income).\n` +
+        `• Once added, FinTrack AI automatically factors it into your savings capacity and affordability metrics!`;
+    } else {
+      answer = `### Total Recorded Income (${timeWin.label}): **₹${totalIncome.toLocaleString('en-IN')}**\n\n` +
+        `You have logged **₹${totalIncome.toLocaleString('en-IN')}** in earnings across **${txs.length}** deposit(s).\n\n` +
+        (txs.length > 0
+          ? `**Income Entries:**\n` +
+            txs.slice(0, 4).map((t) => `• **${t.title}** (${t.category}): +₹${Number(t.amount).toLocaleString('en-IN')} on ${t.date}`).join('\n') + `\n\n`
+          : '') +
+        `- **Net Balance:** ₹${summary.totalBalance.toLocaleString('en-IN')}\n` +
+        `- **Savings Rate:** ${summary.savingsRate}%`;
+    }
 
     followUps = [
-      'Estimate my month-end savings',
-      'Show my recurring subscriptions',
-      'What are my current budgets?',
+      'Compare my income and expenses over the last three months',
+      'Am I spending too much compared to my income?',
+      'How much can I save this month?',
     ];
   }
 
-  // 8. MONTH-END PROJECTION & RUN RATE
-  else if (text.includes('month end') || text.includes('burn rate') || text.includes('forecast') || text.includes('projection')) {
-    const proj = await executeTool('estimateMonthEndSpending', {}, user.id, conversationId);
-    toolsExecuted.push({ tool: 'estimateMonthEndSpending', args: {}, result: proj });
+  // -------------------------------------------------------------
+  // INTENT 20: RECENT TRANSACTIONS LIST
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'RECENT_TRANSACTIONS') {
+    const txsRes = await executeTool('searchTransactions', { limit: parsed.limit || 10, sortBy: 'date' }, user.id, conversationId);
+    toolsExecuted.push({ tool: 'searchTransactions', args: { limit: parsed.limit || 10 }, result: txsRes });
+
+    const txs = txsRes.transactions || [];
+    insights.push({
+      type: 'recent_transactions_card',
+      title: 'Recent Ledger Entries',
+      data: { count: txs.length, transactions: txs },
+    });
+
+    answer = `### Recent Ledger Entries\n\n` +
+      `Here are your **${txs.length}** most recent recorded transactions:\n\n` +
+      (txs.length > 0
+        ? txs.map((t) => `• **${t.title}** (${t.category}): ${t.type === 'income' ? '+' : '-'}₹${Number(t.amount).toLocaleString('en-IN')} on ${t.date}`).join('\n')
+        : 'No transactions recorded in your ledger yet.');
+
+    followUps = [
+      'What are my five largest transactions?',
+      'Where did most of my money go this month?',
+      'Which expenses can I reduce?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 21: BUDGET STATUS
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'BUDGET_STATUS') {
+    const budgetsRes = await executeTool('getBudgets', {}, user.id, conversationId);
+    toolsExecuted.push({ tool: 'getBudgets', args: {}, result: budgetsRes });
 
     insights.push({
-      type: 'projection_card',
-      title: `${proj.curMonthName} Spending Projection`,
-      data: proj,
+      type: 'budget_progress_card',
+      title: 'Budget Allocation & Utilization',
+      data: budgetsRes,
     });
 
-    answer = `### Month-End Cash Flow Forecast\n\n` +
-      `- **Days Elapsed:** ${proj.currentDay} of ${proj.totalDaysInMonth} (${proj.remainingDays} days remaining)\n` +
-      `- **Current Month Spending So Far:** ₹${proj.actualExpenseSoFar.toLocaleString('en-IN')}\n` +
-      `- **Daily Average Burn Rate:** ₹${proj.dailyBurnRate.toLocaleString('en-IN')}/day\n` +
-      `- **Projected Month-End Total Expense:** **₹${proj.projectedTotalExpense.toLocaleString('en-IN')}**\n` +
-      `- **Forecasted Remaining Net Balance:** **₹${proj.projectedRemainingBalance.toLocaleString('en-IN')}**\n\n` +
-      (proj.burnRateWarning
-        ? `⚠️ **Burn Rate Alert:** At this pace, your projected expenses will exceed your income for this month.`
-        : `✅ **Healthy Trajectory:** Your current pace leaves a positive estimated surplus.`);
+    const budgets = budgetsRes.budgets || [];
+    const overBudgets = budgets.filter((b) => b.spent > b.allocated);
+
+    answer = `### Category Budgets Overview\n\n` +
+      `You have **${budgets.length}** active category budgets totaling **₹${budgetsRes.totalAllocated.toLocaleString('en-IN')}** in limits:\n\n` +
+      (budgets.length > 0
+        ? budgets.map((b) => {
+            const pct = Math.round((b.spent / b.allocated) * 100);
+            const status = b.spent > b.allocated ? '⚠️ OVER LIMIT' : `${pct}% used`;
+            return `• **${b.category}:** ₹${b.spent.toLocaleString('en-IN')} / ₹${b.allocated.toLocaleString('en-IN')} [${status}]`;
+          }).join('\n') + `\n\n`
+        : 'No budgets configured yet. You can set one now!\n\n') +
+      (overBudgets.length > 0
+        ? `⚠️ **Alert:** ${overBudgets.length} budget(s) have exceeded allocated spending limits (${overBudgets.map((b) => b.category).join(', ')}).`
+        : `✅ All active category budgets are within their planned spending limits.`);
 
     followUps = [
-      'How can I reduce daily burn rate?',
-      'Check upcoming bills',
-      'Can I afford a ₹10,000 expense?',
+      'Create a monthly Food budget of ₹5,000',
+      'Which expenses can I reduce?',
+      'Where did most of my money go this month?',
     ];
   }
 
-  // 9. DEFAULT: COMPREHENSIVE FINANCIAL SUMMARY & STATUS
+  // -------------------------------------------------------------
+  // INTENT 22: ANOMALOUS EXPENSES
+  // -------------------------------------------------------------
+  else if (parsed.intent === 'ANOMALOUS_EXPENSES') {
+    const anomRes = await executeTool('detectAnomalousExpenses', {}, user.id, conversationId);
+    toolsExecuted.push({ tool: 'detectAnomalousExpenses', args: {}, result: anomRes });
+
+    insights.push({
+      type: 'financial_health_card',
+      title: 'Expense Anomaly Scan',
+      data: anomRes,
+    });
+
+    const anomalies = anomRes.anomalies || [];
+    answer = `### Expense Anomaly Detection\n\n` +
+      (anomRes.anomalyCount > 0
+        ? `FinTrack AI detected **${anomRes.anomalyCount}** unusual transaction(s) requiring attention:\n\n` +
+          anomalies.map((a) => `• **${a.title}** (${a.category}): ₹${Number(a.amount).toLocaleString('en-IN')} on ${a.date} — *${a.reason}*`).join('\n')
+        : `🎉 **Zero anomalies detected!** All recent transactions match your typical spending patterns.`);
+
+    followUps = [
+      'What are my five largest transactions?',
+      'Which expenses can I reduce?',
+      'Where did most of my money go this month?',
+    ];
+  }
+
+  // -------------------------------------------------------------
+  // INTENT 23: GENERAL OR AMBIGUOUS FINANCIAL QUERY
+  // -------------------------------------------------------------
   else {
     const [summary, budgetsRes, billsRes] = await Promise.all([
       executeTool('getDashboardSummary', {}, user.id, conversationId),
@@ -374,23 +981,26 @@ const runLocalOrchestrator = async ({ message, user, memoryContext, conversation
 
     insights.push({
       type: 'financial_health_card',
-      title: 'Current Financial Snapshot',
+      title: 'Financial Overview',
       data: summary,
     });
 
-    answer = `Hello ${user.name || 'there'}! Here is your current financial snapshot:\n\n` +
-      `- **Net Cash Flow Balance:** **₹${summary.totalBalance.toLocaleString('en-IN')}**\n` +
-      `- **Total Recorded Income:** ₹${summary.totalIncome.toLocaleString('en-IN')}\n` +
-      `- **Total Expenses:** ₹${summary.totalExpenses.toLocaleString('en-IN')}\n` +
-      `- **Current Savings Rate:** **${summary.savingsRate}%**\n` +
+    const isDeficit = summary.totalBalance < 0;
+    answer = `Hello ${user.name || 'there'}! Here is your live financial snapshot:\n\n` +
+      `- **Net Available Balance:** **${isDeficit ? `-₹${Math.abs(summary.totalBalance).toLocaleString('en-IN')}` : `₹${summary.totalBalance.toLocaleString('en-IN')}`}** (${isDeficit ? 'Net Deficit' : 'Surplus'})\n` +
+      `- **Total Tracked Income:** ₹${summary.totalIncome.toLocaleString('en-IN')}\n` +
+      `- **Total Tracked Expenses:** ₹${summary.totalExpenses.toLocaleString('en-IN')}\n` +
+      `- **Net Savings Rate:** **${summary.savingsRate}%**\n` +
       `- **Pending Bills:** ₹${billsRes.pendingTotal.toLocaleString('en-IN')} (${billsRes.totalBills} bills due)\n\n` +
-      `How can I assist your financial planning today? You can ask me to evaluate a purchase, compare monthly expenses, or explore savings opportunities.`;
+      `Click any option below to view detailed breakdown instantly, or ask your own question:`;
 
     followUps = [
-      'Compare this month with last month',
-      'Can I afford a ₹10,000 purchase?',
-      'Detect my recurring subscriptions',
-      'Show my category spending breakdown',
+      'Where did most of my money go this month?',
+      'Why is my balance negative?',
+      'Can I afford a ₹15,000 purchase?',
+      'Why are my expenses increasing?',
+      'Compare my income and expenses over the last three months',
+      'Which expenses can I reduce?',
     ];
   }
 

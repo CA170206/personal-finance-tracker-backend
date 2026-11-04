@@ -1,0 +1,3979 @@
+{
+  "conversations": [
+    {
+      "id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "title": "How much did I spend on Food this month?",
+      "created_at": "2026-11-04T11:00:27.213Z",
+      "updated_at": "2026-11-04T11:00:31.015Z"
+    },
+    {
+      "id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "title": "Compare this month with last month",
+      "created_at": "2026-11-04T10:59:49.778Z",
+      "updated_at": "2026-11-04T10:59:57.095Z"
+    },
+    {
+      "id": "f7bbe288-10aa-4c32-a59f-1d077d8b59f4",
+      "user_id": "83f9f3fc-df2d-4e5f-bf51-3b067a429af5",
+      "title": "Estimate my month-end savings",
+      "created_at": "2026-11-04T10:56:11.706Z",
+      "updated_at": "2026-11-04T11:07:17.755Z"
+    },
+    {
+      "id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "title": "Compare this month with last month",
+      "created_at": "2026-11-04T10:50:42.823Z",
+      "updated_at": "2026-11-04T10:50:50.221Z"
+    },
+    {
+      "id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "title": "Compare this month with last month",
+      "created_at": "2026-11-04T10:46:59.876Z",
+      "updated_at": "2026-11-04T10:47:44.558Z"
+    },
+    {
+      "id": "a46b4ab8-0840-46c1-83c7-d87614053878",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "title": "Compare this month with last month",
+      "created_at": "2026-11-04T10:41:22.792Z",
+      "updated_at": "2026-11-04T10:41:27.257Z"
+    },
+    {
+      "id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "title": "How much did I spend on Food this month?",
+      "created_at": "2026-11-04T10:23:27.629Z",
+      "updated_at": "2026-11-04T10:23:44.380Z"
+    },
+    {
+      "id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "title": "How much did I spend on Food this month?",
+      "created_at": "2026-11-04T10:09:10.110Z",
+      "updated_at": "2026-11-04T10:09:33.056Z"
+    },
+    {
+      "id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "title": "How much did I spend on Food this month?",
+      "created_at": "2026-11-04T10:02:21.180Z",
+      "updated_at": "2026-11-04T10:02:39.403Z"
+    },
+    {
+      "id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "title": "How much did I spend on Food this month?",
+      "created_at": "2026-11-04T10:00:27.473Z",
+      "updated_at": "2026-11-04T10:00:48.672Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "9232fddb-3464-4f28-b146-2755f0ed2437",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "user",
+      "content": "How much did I spend on Food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:27.802Z"
+    },
+    {
+      "id": "7cf27493-2ffb-41b1-941c-2e7e99cf0d4c",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹5,050** on **Food**, which accounts for **18.2%** of your total tracked expenses (₹27,699).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {},
+          "result": {
+            "totalExpense": 27699,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 79.4
+              },
+              {
+                "category": "Food",
+                "amount": 5050,
+                "percentage": 18.2
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.3
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 27699,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 79.4
+              },
+              {
+                "category": "Food",
+                "amount": 5050,
+                "percentage": 18.2
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.3
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:31.366Z"
+    },
+    {
+      "id": "6fc64b14-ea2c-4bbe-87a2-df21db65069d",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "user",
+      "content": "Compare my spending with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:33.709Z"
+    },
+    {
+      "id": "22ca55a1-8254-4414-a1fb-c266ee74da0b",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹24,499**, compared to **₹3,200** in **Oct 2026**.\n\n- **Change:** ₹21,299 (+666%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Housing:** ₹22,000 (+100% vs last month)\n• **Entertainment:** ₹649 (+100% vs last month)\n• **Food:** ₹1,850 (-42% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:40.172Z"
+    },
+    {
+      "id": "7e59d014-4a75-4fc7-b89d-f7c2bb380144",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "user",
+      "content": "Can I afford a ₹15,000 Apple Watch?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:41.431Z"
+    },
+    {
+      "id": "4ed8e7a0-7067-4bb6-84c4-fe0a99e92b74",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹15,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).\n\n- **Available Balance:** ₹47,301\n- **Reserved for Upcoming Bills:** ₹3,400\n- **Projected Remaining Month Expenses:** ₹1,59,244\n- **Safe Disposable Buffer After Purchase:** ₹-1,30,342\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 15000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹15,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:44.645Z"
+    },
+    {
+      "id": "1b4af81a-04c6-4162-8143-c91eb547b269",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "user",
+      "content": "Create a monthly Food budget of ₹6,000",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:00:45.944Z"
+    },
+    {
+      "id": "7cacca96-990c-46cf-a75a-a59ec7acafb3",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "role": "assistant",
+      "content": "I have prepared a proposed budget update for you:\n\n🎯 **Action:** Set monthly **Food** budget limit to **₹6,000**.\n\nTo ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.",
+      "tool_calls": [
+        {
+          "tool": "proposeAction",
+          "args": {
+            "actionType": "create_budget"
+          },
+          "result": {
+            "status": "pending_user_confirmation",
+            "proposalId": "b2366be4-0251-4bd3-839f-491f31c0f8b6",
+            "actionType": "create_budget",
+            "summary": "Set monthly Food budget limit to ₹6,000",
+            "details": {
+              "category": "Food",
+              "allocated": 6000,
+              "name": "Food Budget"
+            },
+            "message": "Action proposed successfully. User must explicitly click confirm to execute."
+          }
+        }
+      ],
+      "insights": [],
+      "proposals": [
+        {
+          "status": "pending_user_confirmation",
+          "proposalId": "b2366be4-0251-4bd3-839f-491f31c0f8b6",
+          "actionType": "create_budget",
+          "summary": "Set monthly Food budget limit to ₹6,000",
+          "details": {
+            "category": "Food",
+            "allocated": 6000,
+            "name": "Food Budget"
+          },
+          "message": "Action proposed successfully. User must explicitly click confirm to execute."
+        }
+      ],
+      "created_at": "2026-11-04T10:00:48.672Z"
+    },
+    {
+      "id": "aabeb0e7-4632-4998-bfa8-774013ed4f75",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "user",
+      "content": "How much did I spend on Food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:21.501Z"
+    },
+    {
+      "id": "6e0ef1d8-e490-4fae-a1af-3da60ab31e0f",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹1,850** on **Food**, which accounts for **7.6%** of your total tracked expenses (₹24,499).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:25.776Z"
+    },
+    {
+      "id": "127e9fc7-e988-418b-8c00-39be0a2928a0",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "user",
+      "content": "Compare my spending with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:27.102Z"
+    },
+    {
+      "id": "d4453baa-d5fa-43dd-a8a4-78bc9120b683",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹24,499**, compared to **₹3,200** in **Oct 2026**.\n\n- **Change:** ₹21,299 (+666%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Housing:** ₹22,000 (+100% vs last month)\n• **Entertainment:** ₹649 (+100% vs last month)\n• **Food:** ₹1,850 (-42% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:31.079Z"
+    },
+    {
+      "id": "1f932bc7-8ddb-45d5-a6fe-c774e85a8bfe",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "user",
+      "content": "Can I afford a ₹15,000 Apple Watch?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:32.382Z"
+    },
+    {
+      "id": "384326cd-61c3-4475-a561-0843df36e9c8",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹15,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).\n\n- **Available Balance:** ₹47,301\n- **Reserved for Upcoming Bills:** ₹3,400\n- **Projected Remaining Month Expenses:** ₹1,59,244\n- **Safe Disposable Buffer After Purchase:** ₹-1,30,342\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 15000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹15,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:35.522Z"
+    },
+    {
+      "id": "8bbdc54f-08f2-4d0f-aa29-c26b95a1cd15",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "user",
+      "content": "Create a monthly Food budget of ₹6,000",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:02:36.842Z"
+    },
+    {
+      "id": "afefd563-48a8-4f31-9054-de1eb405dece",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "role": "assistant",
+      "content": "I have prepared a proposed budget update for you:\n\n🎯 **Action:** Set monthly **Food** budget limit to **₹6,000**.\n\nTo ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.",
+      "tool_calls": [
+        {
+          "tool": "proposeAction",
+          "args": {
+            "actionType": "create_budget"
+          },
+          "result": {
+            "status": "pending_user_confirmation",
+            "proposalId": "e2947eca-8a05-430f-af3b-2096b07bf723",
+            "actionType": "create_budget",
+            "summary": "Set monthly Food budget limit to ₹6,000",
+            "details": {
+              "category": "Food",
+              "allocated": 6000,
+              "name": "Food Budget"
+            },
+            "message": "Action proposed successfully. User must explicitly click confirm to execute."
+          }
+        }
+      ],
+      "insights": [],
+      "proposals": [
+        {
+          "status": "pending_user_confirmation",
+          "proposalId": "e2947eca-8a05-430f-af3b-2096b07bf723",
+          "actionType": "create_budget",
+          "summary": "Set monthly Food budget limit to ₹6,000",
+          "details": {
+            "category": "Food",
+            "allocated": 6000,
+            "name": "Food Budget"
+          },
+          "message": "Action proposed successfully. User must explicitly click confirm to execute."
+        }
+      ],
+      "created_at": "2026-11-04T10:02:39.403Z"
+    },
+    {
+      "id": "9f6149f3-5af9-4b29-a469-305cfb5bc904",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "user",
+      "content": "How much did I spend on Food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:10.413Z"
+    },
+    {
+      "id": "4e2cb1cc-e1b6-4a04-ab8d-a0db603b8267",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹1,850** on **Food**, which accounts for **7.6%** of your total tracked expenses (₹24,499).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:14.173Z"
+    },
+    {
+      "id": "e63aad25-363a-4935-8721-e6ef25510b61",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "user",
+      "content": "Compare my spending with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:15.443Z"
+    },
+    {
+      "id": "3bf29ed6-6fd8-4880-bf83-39c9e83c8cde",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹24,499**, compared to **₹3,200** in **Oct 2026**.\n\n- **Change:** ₹21,299 (+666%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Housing:** ₹22,000 (+100% vs last month)\n• **Entertainment:** ₹649 (+100% vs last month)\n• **Food:** ₹1,850 (-42% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:18.537Z"
+    },
+    {
+      "id": "e1570e7b-25d4-49aa-ae8d-7899f3887bb5",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "user",
+      "content": "Can I afford a ₹15,000 Apple Watch?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:19.859Z"
+    },
+    {
+      "id": "ea2548d6-1811-4217-a1a4-279e45872d6b",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹15,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).\n\n- **Available Balance:** ₹47,301\n- **Reserved for Upcoming Bills:** ₹3,400\n- **Projected Remaining Month Expenses:** ₹1,59,244\n- **Safe Disposable Buffer After Purchase:** ₹-1,30,342\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 15000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹15,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:23.271Z"
+    },
+    {
+      "id": "1e89ba04-9db1-4919-b287-055930c27c35",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "user",
+      "content": "Create a monthly Food budget of ₹6,000",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:09:28.601Z"
+    },
+    {
+      "id": "ccb7f52a-6349-440d-b049-1d1b12f383ed",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "role": "assistant",
+      "content": "I have prepared a proposed budget update for you:\n\n🎯 **Action:** Set monthly **Food** budget limit to **₹6,000**.\n\nTo ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.",
+      "tool_calls": [
+        {
+          "tool": "proposeAction",
+          "args": {
+            "actionType": "create_budget"
+          },
+          "result": {
+            "status": "pending_user_confirmation",
+            "proposalId": "2d151f70-4b13-4862-83be-b8a35a828c32",
+            "actionType": "create_budget",
+            "summary": "Set monthly Food budget limit to ₹6,000",
+            "details": {
+              "category": "Food",
+              "allocated": 6000,
+              "name": "Food Budget"
+            },
+            "message": "Action proposed successfully. User must explicitly click confirm to execute."
+          }
+        }
+      ],
+      "insights": [],
+      "proposals": [
+        {
+          "status": "pending_user_confirmation",
+          "proposalId": "2d151f70-4b13-4862-83be-b8a35a828c32",
+          "actionType": "create_budget",
+          "summary": "Set monthly Food budget limit to ₹6,000",
+          "details": {
+            "category": "Food",
+            "allocated": 6000,
+            "name": "Food Budget"
+          },
+          "message": "Action proposed successfully. User must explicitly click confirm to execute."
+        }
+      ],
+      "created_at": "2026-11-04T10:09:33.056Z"
+    },
+    {
+      "id": "ccc6cc6c-babe-4a34-b565-a9b6ebdf6c7f",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "user",
+      "content": "How much did I spend on Food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:27.961Z"
+    },
+    {
+      "id": "9c3a0ef5-37d8-4bbe-92d0-826ad35d559c",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹1,850** on **Food**, which accounts for **7.6%** of your total tracked expenses (₹24,499).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:31.084Z"
+    },
+    {
+      "id": "13ce7181-a734-4eb1-bfb5-18e1b174094f",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "user",
+      "content": "Compare my spending with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:32.505Z"
+    },
+    {
+      "id": "de00b95f-66aa-4cea-b32e-ce731b95eeb9",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹24,499**, compared to **₹3,200** in **Oct 2026**.\n\n- **Change:** ₹21,299 (+666%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Housing:** ₹22,000 (+100% vs last month)\n• **Entertainment:** ₹649 (+100% vs last month)\n• **Food:** ₹1,850 (-42% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:35.600Z"
+    },
+    {
+      "id": "f2458df5-7430-4b0e-9c1b-4b72c77b94e0",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "user",
+      "content": "Can I afford a ₹15,000 Apple Watch?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:36.958Z"
+    },
+    {
+      "id": "b12c813d-e3e6-4d29-a3b8-2d3e4077b9eb",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹15,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).\n\n- **Available Balance:** ₹47,301\n- **Reserved for Upcoming Bills:** ₹3,400\n- **Projected Remaining Month Expenses:** ₹1,59,244\n- **Safe Disposable Buffer After Purchase:** ₹-1,30,342\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 15000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹15,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:40.381Z"
+    },
+    {
+      "id": "2b83b4e9-cdd9-46af-b371-b7a4e5714fa9",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "user",
+      "content": "Create a monthly Food budget of ₹6,000",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:23:41.700Z"
+    },
+    {
+      "id": "39068cae-1450-4ab9-9326-4f668873d527",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "role": "assistant",
+      "content": "I have prepared a proposed budget update for you:\n\n🎯 **Action:** Set monthly **Food** budget limit to **₹6,000**.\n\nTo ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.",
+      "tool_calls": [
+        {
+          "tool": "proposeAction",
+          "args": {
+            "actionType": "create_budget"
+          },
+          "result": {
+            "status": "pending_user_confirmation",
+            "proposalId": "163b72e9-c8d1-44c8-9046-d264c15386e2",
+            "actionType": "create_budget",
+            "summary": "Set monthly Food budget limit to ₹6,000",
+            "details": {
+              "category": "Food",
+              "allocated": 6000,
+              "name": "Food Budget"
+            },
+            "message": "Action proposed successfully. User must explicitly click confirm to execute."
+          }
+        }
+      ],
+      "insights": [],
+      "proposals": [
+        {
+          "status": "pending_user_confirmation",
+          "proposalId": "163b72e9-c8d1-44c8-9046-d264c15386e2",
+          "actionType": "create_budget",
+          "summary": "Set monthly Food budget limit to ₹6,000",
+          "details": {
+            "category": "Food",
+            "allocated": 6000,
+            "name": "Food Budget"
+          },
+          "message": "Action proposed successfully. User must explicitly click confirm to execute."
+        }
+      ],
+      "created_at": "2026-11-04T10:23:44.380Z"
+    },
+    {
+      "id": "66534471-831d-45b2-bb22-79f3fe9b2888",
+      "conversation_id": "a46b4ab8-0840-46c1-83c7-d87614053878",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "role": "user",
+      "content": "Compare this month with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:41:22.987Z"
+    },
+    {
+      "id": "7c81dbb9-379e-42ba-9db8-400d3f83c64c",
+      "conversation_id": "a46b4ab8-0840-46c1-83c7-d87614053878",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹3,200**, compared to **₹0** in **Oct 2026**.\n\n- **Change:** ₹3,200 (+100%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Groceries:** ₹3,200 (+100% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 3200,
+            "previousExpenses": 0,
+            "difference": 3200,
+            "percentageChange": 100,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Groceries",
+                "current": 3200,
+                "previous": 0,
+                "difference": 3200,
+                "percentageChange": 100
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 3200,
+            "previousExpenses": 0,
+            "difference": 3200,
+            "percentageChange": 100,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Groceries",
+                "current": 3200,
+                "previous": 0,
+                "difference": 3200,
+                "percentageChange": 100
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:41:24.792Z"
+    },
+    {
+      "id": "e73a7ccc-0779-44e1-9117-a3e2b316dc84",
+      "conversation_id": "a46b4ab8-0840-46c1-83c7-d87614053878",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "role": "user",
+      "content": "How much did I spend on groceries?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:41:25.895Z"
+    },
+    {
+      "id": "4f37bec7-0b4f-444e-a7d2-0b0c10563ace",
+      "conversation_id": "a46b4ab8-0840-46c1-83c7-d87614053878",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "role": "assistant",
+      "content": "### Spending in Groceries\n\nYou have spent **₹3,200** on **Groceries**, which accounts for **100%** of your total tracked expenses (₹3,200).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {},
+          "result": {
+            "totalExpense": 3200,
+            "categoriesCount": 1,
+            "breakdown": [
+              {
+                "category": "Groceries",
+                "amount": 3200,
+                "percentage": 100
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 3200,
+            "categoriesCount": 1,
+            "breakdown": [
+              {
+                "category": "Groceries",
+                "amount": 3200,
+                "percentage": 100
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:41:27.257Z"
+    },
+    {
+      "id": "a8d7af29-f17f-406d-887f-fda8d3fb1449",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "Compare this month with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:00.248Z"
+    },
+    {
+      "id": "1fc0dc96-4aa0-4966-aef6-8b6e4e81eb36",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹32,778**, compared to **₹22,299** in **Oct 2026**.\n\n- **Change:** ₹10,479 (+47%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Shopping:** ₹7,500 (+100% vs last month)\n• **Food:** ₹4,600 (+156% vs last month)\n• **Entertainment:** ₹678 (+36% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:05.656Z"
+    },
+    {
+      "id": "6ec606db-f9af-4b47-a019-0c9c9b4022ef",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "How much did I spend on food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:09.334Z"
+    },
+    {
+      "id": "548ff85a-e9a8-47f6-82ce-3b9d79e085f6",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹4,600** on **Food**, which accounts for **14%** of your total tracked expenses (₹32,778).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:13.025Z"
+    },
+    {
+      "id": "d22ae75b-7bf9-477f-947f-681b574a337d",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "What were my biggest expenses?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:14.411Z"
+    },
+    {
+      "id": "a827c48b-598e-451a-b164-6651858950ef",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "Hello Query Test User! Here is your current financial snapshot:\n\n- **Net Cash Flow Balance:** **₹1,04,923**\n- **Total Recorded Income:** ₹1,60,000\n- **Total Expenses:** ₹55,077\n- **Current Savings Rate:** **66%**\n- **Pending Bills:** ₹0 (0 bills due)\n\nHow can I assist your financial planning today? You can ask me to evaluate a purchase, compare monthly expenses, or explore savings opportunities.",
+      "tool_calls": [
+        {
+          "tool": "getDashboardSummary",
+          "args": {},
+          "result": {
+            "totalBalance": 104923,
+            "totalIncome": 160000,
+            "totalExpenses": 55077,
+            "savingsRate": 66,
+            "trends": {
+              "incomeChange": 0,
+              "expenseChange": 47,
+              "balanceChange": -18,
+              "savingsRateChange": -13
+            }
+          }
+        },
+        {
+          "tool": "getBudgets",
+          "args": {},
+          "result": {
+            "overallBudget": null,
+            "totalCurrentMonthSpend": 32778,
+            "categories": []
+          }
+        },
+        {
+          "tool": "getBills",
+          "args": {},
+          "result": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "financial_health_card",
+          "title": "Current Financial Snapshot",
+          "data": {
+            "totalBalance": 104923,
+            "totalIncome": 160000,
+            "totalExpenses": 55077,
+            "savingsRate": 66,
+            "trends": {
+              "incomeChange": 0,
+              "expenseChange": 47,
+              "balanceChange": -18,
+              "savingsRateChange": -13
+            }
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:28.762Z"
+    },
+    {
+      "id": "e91dfbb4-f0b7-46ec-bd8b-6229dcb13d5e",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "Can I afford a ₹10,000 purchase?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:30.247Z"
+    },
+    {
+      "id": "f1679365-8fbf-46a3-91c2-e3d9f1bc4159",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹10,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).\n\n- **Available Balance:** ₹1,04,923\n- **Reserved for Upcoming Bills:** ₹0\n- **Projected Remaining Month Expenses:** ₹2,13,057\n- **Safe Disposable Buffer After Purchase:** ₹-1,18,134\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 10000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 0,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -108134,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -118134,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹10,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 0,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -108134,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -118134,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:36.381Z"
+    },
+    {
+      "id": "0a88427d-1b61-429d-ad63-fbd46ec4d2d3",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "Which bills are due next week?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:38.189Z"
+    },
+    {
+      "id": "cd984866-76ff-4abc-9a62-23bac7ee0542",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "### Bills & Utilities Overview\n\nYou have **0** tracked bills, with **₹0** currently pending or overdue.\n\n🎉 You have zero pending or overdue bills at this time!",
+      "tool_calls": [
+        {
+          "tool": "getBills",
+          "args": {},
+          "result": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "bills_summary_card",
+          "title": "Upcoming & Active Bills",
+          "data": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:41.166Z"
+    },
+    {
+      "id": "2e1ac1a6-b8b3-4793-8613-eab5ee833d74",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "user",
+      "content": "Identify my recurring subscriptions.",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:42.048Z"
+    },
+    {
+      "id": "e8cc1564-eec6-47fd-82ef-a7c3803d4b9d",
+      "conversation_id": "9d425723-4757-4d56-9d6b-961fcc4cf0a5",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "role": "assistant",
+      "content": "### Recurring Commitments & Subscriptions\n\nIdentified **5** recurring spending patterns totaling **₹48,178/month** (~₹5,78,136/year).\n\n• **Apartment Monthly Rent** (Housing): ₹20,000 / month (last paid 2026-11-03)\n• **Prev Rent** (Housing): ₹20,000 / month (last paid 2026-10-03)\n• **Amazon Electronics Gadget** (Shopping): ₹7,500 / month (last paid 2026-11-08)\n• **Netflix Standard HD** (Entertainment): ₹499 / month (last paid 2026-11-05)\n• **Spotify Premium Family** (Entertainment): ₹179 / month (last paid 2026-11-07)",
+      "tool_calls": [
+        {
+          "tool": "detectRecurringExpenses",
+          "args": {},
+          "result": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "recurring_card",
+          "title": "Detected Subscriptions & Recurring Commitments",
+          "data": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:47:44.558Z"
+    },
+    {
+      "id": "04ef0606-2f8c-4afb-adce-2ffeecdfd66d",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "Compare this month with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:42.828Z"
+    },
+    {
+      "id": "55f84a86-06d2-47f5-936f-ef0ba1f0fdba",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹32,778**, compared to **₹22,299** in **Oct 2026**.\n\n- **Change:** ₹10,479 (+47%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Shopping:** ₹7,500 (+100% vs last month)\n• **Food:** ₹4,600 (+156% vs last month)\n• **Entertainment:** ₹678 (+36% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:43.610Z"
+    },
+    {
+      "id": "50ead396-0985-4939-ba3a-de81d04cdd22",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "How much did I spend on food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:43.941Z"
+    },
+    {
+      "id": "6dadfca7-897e-43e9-85f7-2afba40c555b",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹4,600** on **Food**, which accounts for **14%** of your total tracked expenses (₹32,778).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:44.650Z"
+    },
+    {
+      "id": "2601baee-994b-4c31-b96c-8fdcdac8d9a8",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "What were my biggest expenses?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:45.041Z"
+    },
+    {
+      "id": "2fe99a59-7883-4276-a3b8-51676e4edf8f",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "Hello Query Test User! Here is your current financial snapshot:\n\n- **Net Cash Flow Balance:** **₹1,04,923**\n- **Total Recorded Income:** ₹1,60,000\n- **Total Expenses:** ₹55,077\n- **Current Savings Rate:** **66%**\n- **Pending Bills:** ₹0 (0 bills due)\n\nHow can I assist your financial planning today? You can ask me to evaluate a purchase, compare monthly expenses, or explore savings opportunities.",
+      "tool_calls": [
+        {
+          "tool": "getDashboardSummary",
+          "args": {},
+          "result": {
+            "totalBalance": 104923,
+            "totalIncome": 160000,
+            "totalExpenses": 55077,
+            "savingsRate": 66,
+            "trends": {
+              "incomeChange": 0,
+              "expenseChange": 47,
+              "balanceChange": -18,
+              "savingsRateChange": -13
+            }
+          }
+        },
+        {
+          "tool": "getBudgets",
+          "args": {},
+          "result": {
+            "overallBudget": null,
+            "totalCurrentMonthSpend": 32778,
+            "categories": []
+          }
+        },
+        {
+          "tool": "getBills",
+          "args": {},
+          "result": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "financial_health_card",
+          "title": "Current Financial Snapshot",
+          "data": {
+            "totalBalance": 104923,
+            "totalIncome": 160000,
+            "totalExpenses": 55077,
+            "savingsRate": 66,
+            "trends": {
+              "incomeChange": 0,
+              "expenseChange": 47,
+              "balanceChange": -18,
+              "savingsRateChange": -13
+            }
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:46.371Z"
+    },
+    {
+      "id": "39f0ea25-6fa6-4e0f-bd43-e9ddd77bcab2",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "Can I afford a ₹10,000 purchase?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:46.741Z"
+    },
+    {
+      "id": "9b61c9c5-9f05-4fac-9584-143df922b48a",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹10,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).\n\n- **Available Balance:** ₹1,04,923\n- **Reserved for Upcoming Bills:** ₹0\n- **Projected Remaining Month Expenses:** ₹2,13,057\n- **Safe Disposable Buffer After Purchase:** ₹-1,18,134\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 10000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 0,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -108134,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -118134,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹10,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 0,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -108134,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -118134,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹0) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:47.472Z"
+    },
+    {
+      "id": "a5ea3fc1-9ad2-421e-a69b-1c3560852f8a",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "Which bills are due next week?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:47.827Z"
+    },
+    {
+      "id": "71bb9fca-93a3-4903-9ab2-99813c983fb7",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "### Bills & Utilities Overview\n\nYou have **0** tracked bills, with **₹0** currently pending or overdue.\n\n🎉 You have zero pending or overdue bills at this time!",
+      "tool_calls": [
+        {
+          "tool": "getBills",
+          "args": {},
+          "result": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "bills_summary_card",
+          "title": "Upcoming & Active Bills",
+          "data": {
+            "totalBills": 0,
+            "pendingTotal": 0,
+            "bills": []
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:49.063Z"
+    },
+    {
+      "id": "595e0923-37bc-4972-8a88-32974cb8682d",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "user",
+      "content": "Identify my recurring subscriptions.",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:49.585Z"
+    },
+    {
+      "id": "851d78dc-729f-4b7c-9924-cf475f68e213",
+      "conversation_id": "fcd09d42-8688-4169-b7f5-dae13f0e22ff",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "role": "assistant",
+      "content": "### Recurring Commitments & Subscriptions\n\nIdentified **5** recurring spending patterns totaling **₹48,178/month** (~₹5,78,136/year).\n\n• **Apartment Monthly Rent** (Housing): ₹20,000 / month (last paid 2026-11-03)\n• **Prev Rent** (Housing): ₹20,000 / month (last paid 2026-10-03)\n• **Amazon Electronics Gadget** (Shopping): ₹7,500 / month (last paid 2026-11-08)\n• **Netflix Standard HD** (Entertainment): ₹499 / month (last paid 2026-11-05)\n• **Spotify Premium Family** (Entertainment): ₹179 / month (last paid 2026-11-07)",
+      "tool_calls": [
+        {
+          "tool": "detectRecurringExpenses",
+          "args": {},
+          "result": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "recurring_card",
+          "title": "Detected Subscriptions & Recurring Commitments",
+          "data": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:50:50.221Z"
+    },
+    {
+      "id": "d836a82b-c952-42e4-be1a-90163d98da4e",
+      "conversation_id": "f7bbe288-10aa-4c32-a59f-1d077d8b59f4",
+      "user_id": "83f9f3fc-df2d-4e5f-bf51-3b067a429af5",
+      "role": "user",
+      "content": "Estimate my month-end savings",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:56:11.708Z"
+    },
+    {
+      "id": "d61b91c3-8ec1-40c5-9e07-1129a81a3595",
+      "conversation_id": "f7bbe288-10aa-4c32-a59f-1d077d8b59f4",
+      "user_id": "83f9f3fc-df2d-4e5f-bf51-3b067a429af5",
+      "role": "user",
+      "content": "Can I afford a ₹10,000 purchase?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:56:19.987Z"
+    },
+    {
+      "id": "52b97499-765f-46cb-a3f0-d3b3eca5fd02",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "Compare this month with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:49.781Z"
+    },
+    {
+      "id": "67cd1041-c365-4d39-8bf1-6b47038ceac0",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹32,778**, compared to **₹22,299** in **Oct 2026**.\n\n- **Change:** ₹10,479 (+47%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Shopping:** ₹7,500 (+100% vs last month)\n• **Food:** ₹4,600 (+156% vs last month)\n• **Entertainment:** ₹678 (+36% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 32778,
+            "previousExpenses": 22299,
+            "difference": 10479,
+            "percentageChange": 47,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Shopping",
+                "current": 7500,
+                "previous": 0,
+                "difference": 7500,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 4600,
+                "previous": 1800,
+                "difference": 2800,
+                "percentageChange": 156
+              },
+              {
+                "category": "Entertainment",
+                "current": 678,
+                "previous": 499,
+                "difference": 179,
+                "percentageChange": 36
+              },
+              {
+                "category": "Housing",
+                "current": 20000,
+                "previous": 20000,
+                "difference": 0,
+                "percentageChange": 0
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:51.062Z"
+    },
+    {
+      "id": "4daf95b4-204f-4371-93dd-69019a57f129",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "How much did I spend on food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:51.412Z"
+    },
+    {
+      "id": "59dbe4ae-6e13-4c51-9aa0-6162a92b7f23",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹4,600** on **Food**, which accounts for **14%** of your total tracked expenses (₹32,778).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 32778,
+            "categoriesCount": 4,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 20000,
+                "percentage": 61
+              },
+              {
+                "category": "Shopping",
+                "amount": 7500,
+                "percentage": 22.9
+              },
+              {
+                "category": "Food",
+                "amount": 4600,
+                "percentage": 14
+              },
+              {
+                "category": "Entertainment",
+                "amount": 678,
+                "percentage": 2.1
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:52.080Z"
+    },
+    {
+      "id": "a9215a93-b7f1-44a9-9500-55e48d31ad7e",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "What were my biggest expenses?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:52.521Z"
+    },
+    {
+      "id": "52c57d9c-787b-4373-9730-be0ed4505399",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Top Recorded Expenses\n\nHere are your largest recorded expenses:\n\n1. **Apartment Monthly Rent** (Housing): **₹20,000** on 2026-11-03\n2. **Prev Rent** (Housing): **₹20,000** on 2026-10-03\n3. **Amazon Electronics Gadget** (Shopping): **₹7,500** on 2026-11-08\n4. **Blinkit Grocery Order** (Food): **₹2,200** on 2026-11-06\n5. **Prev Swiggy** (Food): **₹1,800** on 2026-10-05",
+      "tool_calls": [
+        {
+          "tool": "searchTransactions",
+          "args": {
+            "type": "expense",
+            "sortBy": "amount",
+            "limit": 5
+          },
+          "result": {
+            "count": 5,
+            "transactions": [
+              {
+                "id": "3172a7ea-f4f1-464d-aa43-49a33d087acc",
+                "title": "Apartment Monthly Rent",
+                "amount": 20000,
+                "type": "expense",
+                "category": "Housing",
+                "date": "2026-11-03",
+                "payment_method": null
+              },
+              {
+                "id": "75b92131-72be-4d0a-94dc-6e5f38cb3d8a",
+                "title": "Prev Rent",
+                "amount": 20000,
+                "type": "expense",
+                "category": "Housing",
+                "date": "2026-10-03",
+                "payment_method": null
+              },
+              {
+                "id": "6043e625-aacb-42ff-bce2-d4ac76a9d607",
+                "title": "Amazon Electronics Gadget",
+                "amount": 7500,
+                "type": "expense",
+                "category": "Shopping",
+                "date": "2026-11-08",
+                "payment_method": null
+              },
+              {
+                "id": "82df0730-4e7a-4f98-a010-1411c05b0a98",
+                "title": "Blinkit Grocery Order",
+                "amount": 2200,
+                "type": "expense",
+                "category": "Food",
+                "date": "2026-11-06",
+                "payment_method": null
+              },
+              {
+                "id": "f634d9e7-26b9-41b6-96cf-44cbf350267e",
+                "title": "Prev Swiggy",
+                "amount": 1800,
+                "type": "expense",
+                "category": "Food",
+                "date": "2026-10-05",
+                "payment_method": null
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "recent_transactions_card",
+          "title": "Top Recorded Expenses",
+          "data": {
+            "count": 5,
+            "transactions": [
+              {
+                "id": "3172a7ea-f4f1-464d-aa43-49a33d087acc",
+                "title": "Apartment Monthly Rent",
+                "amount": 20000,
+                "type": "expense",
+                "category": "Housing",
+                "date": "2026-11-03",
+                "payment_method": null
+              },
+              {
+                "id": "75b92131-72be-4d0a-94dc-6e5f38cb3d8a",
+                "title": "Prev Rent",
+                "amount": 20000,
+                "type": "expense",
+                "category": "Housing",
+                "date": "2026-10-03",
+                "payment_method": null
+              },
+              {
+                "id": "6043e625-aacb-42ff-bce2-d4ac76a9d607",
+                "title": "Amazon Electronics Gadget",
+                "amount": 7500,
+                "type": "expense",
+                "category": "Shopping",
+                "date": "2026-11-08",
+                "payment_method": null
+              },
+              {
+                "id": "82df0730-4e7a-4f98-a010-1411c05b0a98",
+                "title": "Blinkit Grocery Order",
+                "amount": 2200,
+                "type": "expense",
+                "category": "Food",
+                "date": "2026-11-06",
+                "payment_method": null
+              },
+              {
+                "id": "f634d9e7-26b9-41b6-96cf-44cbf350267e",
+                "title": "Prev Swiggy",
+                "amount": 1800,
+                "type": "expense",
+                "category": "Food",
+                "date": "2026-10-05",
+                "payment_method": null
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:53.247Z"
+    },
+    {
+      "id": "beecb42e-192f-419d-8fc3-724e57d56354",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "Can I afford a ₹10,000 purchase?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:53.541Z"
+    },
+    {
+      "id": "d46953ce-5695-4803-88ac-465889413214",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹10,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹2,850) and estimated month-end living expenses (₹2,13,057).\n\n- **Available Balance:** ₹1,04,923\n- **Reserved for Upcoming Bills:** ₹2,850\n- **Projected Remaining Month Expenses:** ₹2,13,057\n- **Safe Disposable Buffer After Purchase:** ₹-1,20,984\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 10000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 2850,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -110984,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -120984,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹2,850) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹10,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹10,000 purchase?",
+            "purchaseAmount": 10000,
+            "availableFunds": 104923,
+            "upcomingBillsAmount": 2850,
+            "projectedRemainingSpend": 213057,
+            "safeDisposableSurplus": -110984,
+            "balanceAfterPurchase": 94923,
+            "surplusAfterPurchase": -120984,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹2,850) and estimated month-end living expenses (₹2,13,057).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:54.533Z"
+    },
+    {
+      "id": "8960a2cc-add4-45cb-bb11-d3f0f01950bb",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "Which bills are due next week?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:54.859Z"
+    },
+    {
+      "id": "761ce9c1-c41d-4ba0-ab89-a30a1bdd2327",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Bills & Utilities Overview\n\nYou have **1** tracked bills, with **₹2,850** currently pending or overdue.\n\n**Upcoming Deadlines:**\n• **Tata Power Mumbai** (Electricity): ₹2,850 — Due 2026-11-09 [PENDING]",
+      "tool_calls": [
+        {
+          "tool": "getBills",
+          "args": {},
+          "result": {
+            "totalBills": 1,
+            "pendingTotal": 2850,
+            "bills": [
+              {
+                "id": "b1244019-451c-47be-b364-e597afc8a2b0",
+                "provider": "Tata Power Mumbai",
+                "billType": "Electricity",
+                "amount": 2850,
+                "dueDate": "2026-11-09",
+                "status": "pending",
+                "isRecurring": true
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "bills_summary_card",
+          "title": "Upcoming & Active Bills",
+          "data": {
+            "totalBills": 1,
+            "pendingTotal": 2850,
+            "bills": [
+              {
+                "id": "b1244019-451c-47be-b364-e597afc8a2b0",
+                "provider": "Tata Power Mumbai",
+                "billType": "Electricity",
+                "amount": 2850,
+                "dueDate": "2026-11-09",
+                "status": "pending",
+                "isRecurring": true
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:55.664Z"
+    },
+    {
+      "id": "c45bbe3c-7d06-4d56-b70e-39f64016e5fb",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "user",
+      "content": "Identify my recurring subscriptions.",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:56.103Z"
+    },
+    {
+      "id": "1316a0ba-ca03-4977-bb59-8d1f71767c7b",
+      "conversation_id": "73d8bc82-a661-495e-b9e5-2fd66a3d959b",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "role": "assistant",
+      "content": "### Recurring Commitments & Subscriptions\n\nIdentified **5** recurring spending patterns totaling **₹48,178/month** (~₹5,78,136/year).\n\n• **Apartment Monthly Rent** (Housing): ₹20,000 / month (last paid 2026-11-03)\n• **Prev Rent** (Housing): ₹20,000 / month (last paid 2026-10-03)\n• **Amazon Electronics Gadget** (Shopping): ₹7,500 / month (last paid 2026-11-08)\n• **Netflix Standard HD** (Entertainment): ₹499 / month (last paid 2026-11-05)\n• **Spotify Premium Family** (Entertainment): ₹179 / month (last paid 2026-11-07)",
+      "tool_calls": [
+        {
+          "tool": "detectRecurringExpenses",
+          "args": {},
+          "result": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "recurring_card",
+          "title": "Detected Subscriptions & Recurring Commitments",
+          "data": {
+            "recurringCount": 5,
+            "totalMonthlyCommitment": 48178,
+            "items": [
+              {
+                "title": "Apartment Monthly Rent",
+                "normalizedTitle": "apartment monthly rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Prev Rent",
+                "normalizedTitle": "prev rent",
+                "category": "Housing",
+                "amount": 20000,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-10-03",
+                "projectedAnnualCost": 240000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Amazon Electronics Gadget",
+                "normalizedTitle": "amazon electronics gadget",
+                "category": "Shopping",
+                "amount": 7500,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-08",
+                "projectedAnnualCost": 90000,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Netflix Standard HD",
+                "normalizedTitle": "netflix standard hd",
+                "category": "Entertainment",
+                "amount": 499,
+                "frequency": "monthly",
+                "occurrences": 2,
+                "lastChargedDate": "2026-11-05",
+                "projectedAnnualCost": 5988,
+                "isConfirmedSubscription": true
+              },
+              {
+                "title": "Spotify Premium Family",
+                "normalizedTitle": "spotify premium family",
+                "category": "Entertainment",
+                "amount": 179,
+                "frequency": "monthly",
+                "occurrences": 1,
+                "lastChargedDate": "2026-11-07",
+                "projectedAnnualCost": 2148,
+                "isConfirmedSubscription": true
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T10:59:57.095Z"
+    },
+    {
+      "id": "50d29503-d57c-4f3b-b298-82bdcb85a095",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "user",
+      "content": "How much did I spend on Food this month?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:27.215Z"
+    },
+    {
+      "id": "6e6a2941-b854-4d3d-80d1-7ed6ba9d791d",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "assistant",
+      "content": "### Spending in Food\n\nYou have spent **₹1,850** on **Food**, which accounts for **7.6%** of your total tracked expenses (₹24,499).",
+      "tool_calls": [
+        {
+          "tool": "getSpendingByCategory",
+          "args": {
+            "month": 10,
+            "year": 2026
+          },
+          "result": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "category_breakdown_card",
+          "title": "Expense Breakdown by Category",
+          "data": {
+            "totalExpense": 24499,
+            "categoriesCount": 3,
+            "breakdown": [
+              {
+                "category": "Housing",
+                "amount": 22000,
+                "percentage": 89.8
+              },
+              {
+                "category": "Food",
+                "amount": 1850,
+                "percentage": 7.6
+              },
+              {
+                "category": "Entertainment",
+                "amount": 649,
+                "percentage": 2.6
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:27.782Z"
+    },
+    {
+      "id": "d271b182-e8b7-474c-b271-0bfc69e7b793",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "user",
+      "content": "Compare my spending with last month",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:28.424Z"
+    },
+    {
+      "id": "1546ce96-fa33-495d-bf55-9b56b203f665",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "assistant",
+      "content": "### Monthly Spending Comparison\n\nIn **Nov 2026**, your total recorded expenses are **₹24,499**, compared to **₹3,200** in **Oct 2026**.\n\n- **Change:** ₹21,299 (+666%)\n- **Trend:** Spending has increased.\n\n**Top Shifts by Category:**\n• **Housing:** ₹22,000 (+100% vs last month)\n• **Entertainment:** ₹649 (+100% vs last month)\n• **Food:** ₹1,850 (-42% vs last month)",
+      "tool_calls": [
+        {
+          "tool": "compareMonthlySpending",
+          "args": {},
+          "result": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "comparison_card",
+          "title": "Nov 2026 vs Oct 2026 Spending",
+          "data": {
+            "currentPeriod": "Nov 2026",
+            "previousPeriod": "Oct 2026",
+            "currentExpenses": 24499,
+            "previousExpenses": 3200,
+            "difference": 21299,
+            "percentageChange": 666,
+            "trend": "increased",
+            "categoryDeltas": [
+              {
+                "category": "Housing",
+                "current": 22000,
+                "previous": 0,
+                "difference": 22000,
+                "percentageChange": 100
+              },
+              {
+                "category": "Entertainment",
+                "current": 649,
+                "previous": 0,
+                "difference": 649,
+                "percentageChange": 100
+              },
+              {
+                "category": "Food",
+                "current": 1850,
+                "previous": 3200,
+                "difference": -1350,
+                "percentageChange": -42
+              }
+            ]
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:28.842Z"
+    },
+    {
+      "id": "9aad60a6-f8d1-4457-acd7-b1a978b73d14",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "user",
+      "content": "Can I afford a ₹15,000 Apple Watch?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:29.070Z"
+    },
+    {
+      "id": "d744be0a-37bc-4063-99d4-5bd20806990a",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "assistant",
+      "content": "### Affordability Analysis for ₹15,000\n\nWhile you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).\n\n- **Available Balance:** ₹47,301\n- **Reserved for Upcoming Bills:** ₹3,400\n- **Projected Remaining Month Expenses:** ₹1,59,244\n- **Safe Disposable Buffer After Purchase:** ₹-1,30,342\n\n⚠️ **Verdict:** Proceed with caution. You have enough raw balance, but this leaves little cushion for bills or unexpected costs.",
+      "tool_calls": [
+        {
+          "tool": "analyzeAffordability",
+          "args": {
+            "amount": 15000
+          },
+          "result": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "insights": [
+        {
+          "type": "affordability_meter",
+          "title": "Affordability Assessment: ₹15,000",
+          "status": "caution",
+          "score": 45,
+          "data": {
+            "itemDescription": "Can I afford a ₹15,000 Apple Watch?",
+            "purchaseAmount": 15000,
+            "availableFunds": 47301,
+            "upcomingBillsAmount": 3400,
+            "projectedRemainingSpend": 159244,
+            "safeDisposableSurplus": -115342,
+            "balanceAfterPurchase": 32301,
+            "surplusAfterPurchase": -130342,
+            "status": "caution",
+            "score": 45,
+            "reason": "While you have enough raw balance, this purchase will cut into funds reserved for upcoming bills (₹3,400) and estimated month-end living expenses (₹1,59,244).",
+            "categoryBudget": null
+          }
+        }
+      ],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:30.303Z"
+    },
+    {
+      "id": "961d00b2-60fe-4ed7-b412-3b05c55e6853",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "user",
+      "content": "Create a monthly Food budget of ₹6,000",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T11:00:30.555Z"
+    },
+    {
+      "id": "1352b4be-a35c-4d95-bd68-bf185653dc58",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "role": "assistant",
+      "content": "I have prepared a proposed budget update for you:\n\n🎯 **Action:** Set monthly **Food** budget limit to **₹6,000**.\n\nTo ensure security and user control, please review and click **Confirm & Apply** below to update your live budget table.",
+      "tool_calls": [
+        {
+          "tool": "proposeAction",
+          "args": {
+            "actionType": "create_budget"
+          },
+          "result": {
+            "status": "pending_user_confirmation",
+            "proposalId": "dcc65b15-6f1a-4ef5-be50-0b14caa7ecdd",
+            "actionType": "create_budget",
+            "summary": "Set monthly Food budget limit to ₹6,000",
+            "details": {
+              "category": "Food",
+              "allocated": 6000,
+              "name": "Food Budget"
+            },
+            "message": "Action proposed successfully. User must explicitly click confirm to execute."
+          }
+        }
+      ],
+      "insights": [],
+      "proposals": [
+        {
+          "status": "pending_user_confirmation",
+          "proposalId": "dcc65b15-6f1a-4ef5-be50-0b14caa7ecdd",
+          "actionType": "create_budget",
+          "summary": "Set monthly Food budget limit to ₹6,000",
+          "details": {
+            "category": "Food",
+            "allocated": 6000,
+            "name": "Food Budget"
+          },
+          "message": "Action proposed successfully. User must explicitly click confirm to execute."
+        }
+      ],
+      "created_at": "2026-11-04T11:00:31.015Z"
+    },
+    {
+      "id": "cafa02d5-e609-4ce9-a336-ef8ab1070344",
+      "conversation_id": "f7bbe288-10aa-4c32-a59f-1d077d8b59f4",
+      "user_id": "83f9f3fc-df2d-4e5f-bf51-3b067a429af5",
+      "role": "user",
+      "content": "Can I afford a ₹10,000 purchase?",
+      "tool_calls": [],
+      "insights": [],
+      "proposals": [],
+      "created_at": "2026-11-04T11:07:17.755Z"
+    }
+  ],
+  "memory": [
+    {
+      "id": "c849aa20-174f-42b0-8325-fcc056e0e1af",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 22000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-02"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:00:29.243Z",
+      "updated_at": "2026-11-04T10:00:46.989Z"
+    },
+    {
+      "id": "420ec175-85c5-46d5-bb95-d6f2ab5cc0bb",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "memory_type": "recurring_expense",
+      "key": "netflix subscription",
+      "value": {
+        "amount": 649,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:00:29.589Z",
+      "updated_at": "2026-11-04T10:00:47.350Z"
+    },
+    {
+      "id": "9980bee9-e08d-4a4b-99c3-49c06b3259f0",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 79,
+        "totalSpent": 22000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:00:29.913Z",
+      "updated_at": "2026-11-04T10:00:47.690Z"
+    },
+    {
+      "id": "3547fc86-3253-4cdb-a096-291db997b25d",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 22000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-02"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:02:22.441Z",
+      "updated_at": "2026-11-04T10:02:37.800Z"
+    },
+    {
+      "id": "e4514e8b-479f-4887-a70e-058f0642416f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "memory_type": "recurring_expense",
+      "key": "netflix subscription",
+      "value": {
+        "amount": 649,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:02:22.762Z",
+      "updated_at": "2026-11-04T10:02:38.145Z"
+    },
+    {
+      "id": "59ba0161-123a-4c18-8d59-17ee2556dbfd",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 79,
+        "totalSpent": 22000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:02:23.089Z",
+      "updated_at": "2026-11-04T10:02:38.440Z"
+    },
+    {
+      "id": "b82e4257-c612-4a99-8df8-e49efdfeb4bc",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 22000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-02"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:09:12.553Z",
+      "updated_at": "2026-11-04T10:09:30.189Z"
+    },
+    {
+      "id": "d3e9fba3-3a49-4227-ac8b-3b518f63fc3e",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "memory_type": "recurring_expense",
+      "key": "netflix subscription",
+      "value": {
+        "amount": 649,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:09:12.911Z",
+      "updated_at": "2026-11-04T10:09:30.752Z"
+    },
+    {
+      "id": "30c0972a-101f-41bc-81e6-1401d0f42689",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 79,
+        "totalSpent": 22000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:09:13.231Z",
+      "updated_at": "2026-11-04T10:09:31.116Z"
+    },
+    {
+      "id": "be38df63-2c87-43bf-a87b-5d2e2947f613",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 22000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-02"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:23:29.305Z",
+      "updated_at": "2026-11-04T10:23:42.660Z"
+    },
+    {
+      "id": "9ecbb820-befe-4e5b-aad3-7b918c0c3712",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "memory_type": "recurring_expense",
+      "key": "netflix subscription",
+      "value": {
+        "amount": 649,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:23:29.660Z",
+      "updated_at": "2026-11-04T10:23:43.045Z"
+    },
+    {
+      "id": "ea87d8e5-c43d-458d-9e23-bf928cb465b8",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 79,
+        "totalSpent": 22000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:23:29.973Z",
+      "updated_at": "2026-11-04T10:23:43.381Z"
+    },
+    {
+      "id": "bb6b203b-177e-4e67-890e-70584f2bd0eb",
+      "user_id": "83f9f3fc-df2d-4e5f-bf51-3b067a429af5",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Transportation",
+        "sharePercentage": 90,
+        "totalSpent": 2540
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:36:51.962Z",
+      "updated_at": "2026-11-04T11:07:18.339Z"
+    },
+    {
+      "id": "97fbf34d-427f-4a6f-82b5-a3af34430a4a",
+      "user_id": "ac7d4502-d5ca-466c-acca-042e7bc346bc",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Groceries",
+        "sharePercentage": 100,
+        "totalSpent": 3200
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:41:23.888Z",
+      "updated_at": "2026-11-04T10:41:26.587Z"
+    },
+    {
+      "id": "0441c876-c2f4-4667-8287-a6b2db9e04ee",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:47:01.178Z",
+      "updated_at": "2026-11-04T10:47:42.651Z"
+    },
+    {
+      "id": "a407819f-7852-481b-bcdf-5b67ddbafcb2",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "recurring_expense",
+      "key": "prev rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-10-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:47:01.494Z",
+      "updated_at": "2026-11-04T10:47:42.845Z"
+    },
+    {
+      "id": "e297287d-5846-4092-b98b-38eec7c4f9cc",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "recurring_expense",
+      "key": "amazon electronics gadget",
+      "value": {
+        "amount": 7500,
+        "frequency": "monthly",
+        "lastDate": "2026-11-08"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:47:01.854Z",
+      "updated_at": "2026-11-04T10:47:43.023Z"
+    },
+    {
+      "id": "c08c42c8-a16a-4632-8568-596c8e92ac61",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "recurring_expense",
+      "key": "netflix standard hd",
+      "value": {
+        "amount": 499,
+        "frequency": "monthly",
+        "lastDate": "2026-11-05"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:47:02.368Z",
+      "updated_at": "2026-11-04T10:47:43.196Z"
+    },
+    {
+      "id": "a9445669-3502-4584-bccf-7c7720e13572",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "recurring_expense",
+      "key": "spotify premium family",
+      "value": {
+        "amount": 179,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:47:02.801Z",
+      "updated_at": "2026-11-04T10:47:43.392Z"
+    },
+    {
+      "id": "bd5f51ae-8d52-4287-946f-8ee19e273e95",
+      "user_id": "2f8ee9ab-38d9-46c7-a260-c7c2d861b351",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 73,
+        "totalSpent": 40000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:47:03.281Z",
+      "updated_at": "2026-11-04T10:47:43.565Z"
+    },
+    {
+      "id": "5ea67404-562a-455d-8aef-53d0a1ea5940",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:50:43.223Z",
+      "updated_at": "2026-11-04T10:50:49.905Z"
+    },
+    {
+      "id": "6658308c-259d-4f54-b4ee-9bde41f9eee8",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "recurring_expense",
+      "key": "prev rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-10-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:50:43.225Z",
+      "updated_at": "2026-11-04T10:50:49.911Z"
+    },
+    {
+      "id": "9ea79ebc-e45d-4abb-9170-1afd2d759a2e",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "recurring_expense",
+      "key": "amazon electronics gadget",
+      "value": {
+        "amount": 7500,
+        "frequency": "monthly",
+        "lastDate": "2026-11-08"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:50:43.228Z",
+      "updated_at": "2026-11-04T10:50:49.913Z"
+    },
+    {
+      "id": "fa89712a-05fc-4170-8e9f-af1e61bf50ca",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "recurring_expense",
+      "key": "netflix standard hd",
+      "value": {
+        "amount": 499,
+        "frequency": "monthly",
+        "lastDate": "2026-11-05"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:50:43.230Z",
+      "updated_at": "2026-11-04T10:50:49.915Z"
+    },
+    {
+      "id": "26130266-2a97-456d-8a34-28acddb22350",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "recurring_expense",
+      "key": "spotify premium family",
+      "value": {
+        "amount": 179,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:50:43.232Z",
+      "updated_at": "2026-11-04T10:50:49.916Z"
+    },
+    {
+      "id": "6a39a40b-6606-4581-a536-0a625ae1ee61",
+      "user_id": "b697fa1e-6ebd-4cae-b02c-f77840c4bc2b",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 73,
+        "totalSpent": 40000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:50:43.237Z",
+      "updated_at": "2026-11-04T10:50:49.918Z"
+    },
+    {
+      "id": "007d41e1-fc54-49a2-8e95-043a4888b95a",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:59:50.623Z",
+      "updated_at": "2026-11-04T10:59:56.612Z"
+    },
+    {
+      "id": "4bc9a0c6-95e6-4b34-b5e4-e593c08ed9b6",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "recurring_expense",
+      "key": "prev rent",
+      "value": {
+        "amount": 20000,
+        "frequency": "monthly",
+        "lastDate": "2026-10-03"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:59:50.625Z",
+      "updated_at": "2026-11-04T10:59:56.614Z"
+    },
+    {
+      "id": "cf7582ee-5937-4b2f-8855-ec84f0497896",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "recurring_expense",
+      "key": "amazon electronics gadget",
+      "value": {
+        "amount": 7500,
+        "frequency": "monthly",
+        "lastDate": "2026-11-08"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:59:50.627Z",
+      "updated_at": "2026-11-04T10:59:56.618Z"
+    },
+    {
+      "id": "b64838a6-f42d-470d-9928-00ddecb05693",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "recurring_expense",
+      "key": "netflix standard hd",
+      "value": {
+        "amount": 499,
+        "frequency": "monthly",
+        "lastDate": "2026-11-05"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:59:50.630Z",
+      "updated_at": "2026-11-04T10:59:56.620Z"
+    },
+    {
+      "id": "471016f6-abe2-4d46-a8c7-42d7f203e0ef",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "recurring_expense",
+      "key": "spotify premium family",
+      "value": {
+        "amount": 179,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T10:59:50.634Z",
+      "updated_at": "2026-11-04T10:59:56.624Z"
+    },
+    {
+      "id": "68f4d201-2eb9-4928-992b-489aaf35ad9e",
+      "user_id": "e3a56510-f733-4475-9a7d-0a9cd49d34cf",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 73,
+        "totalSpent": 40000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T10:59:50.635Z",
+      "updated_at": "2026-11-04T10:59:56.626Z"
+    },
+    {
+      "id": "f718e416-180c-4f48-bba6-7c16989a3bf8",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "memory_type": "recurring_expense",
+      "key": "apartment monthly rent",
+      "value": {
+        "amount": 22000,
+        "frequency": "monthly",
+        "lastDate": "2026-11-02"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T11:00:27.499Z",
+      "updated_at": "2026-11-04T11:00:31.010Z"
+    },
+    {
+      "id": "f7c008b0-5ae6-4d0e-9b0e-6d1b7247f8b9",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "memory_type": "recurring_expense",
+      "key": "netflix subscription",
+      "value": {
+        "amount": 649,
+        "frequency": "monthly",
+        "lastDate": "2026-11-07"
+      },
+      "confidence": 0.9,
+      "created_at": "2026-11-04T11:00:27.501Z",
+      "updated_at": "2026-11-04T11:00:31.012Z"
+    },
+    {
+      "id": "be86339b-826a-4094-83bb-4d37e66df34f",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "memory_type": "spending_pattern",
+      "key": "primary_expense_category",
+      "value": {
+        "category": "Housing",
+        "sharePercentage": 79,
+        "totalSpent": 22000
+      },
+      "confidence": 0.95,
+      "created_at": "2026-11-04T11:00:27.502Z",
+      "updated_at": "2026-11-04T11:00:31.012Z"
+    }
+  ],
+  "feedback": [
+    {
+      "id": "3cb47f46-9673-4fe3-8a37-04b3ae84bd51",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "message_id": null,
+      "rating": "helpful",
+      "recommendation_key": "food_budget_6000",
+      "user_comment": "Perfect limit for dining out.",
+      "created_at": "2026-11-04T10:00:56.227Z"
+    },
+    {
+      "id": "9d53be48-d48c-4c7d-8e16-63e4cbf43f9f",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "message_id": null,
+      "rating": "helpful",
+      "recommendation_key": "food_budget_6000",
+      "user_comment": "Perfect limit for dining out.",
+      "created_at": "2026-11-04T10:02:45.970Z"
+    },
+    {
+      "id": "5626de92-5912-4f36-bc87-6b4292793a5e",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "message_id": null,
+      "rating": "helpful",
+      "recommendation_key": "food_budget_6000",
+      "user_comment": "Perfect limit for dining out.",
+      "created_at": "2026-11-04T10:09:40.268Z"
+    },
+    {
+      "id": "aa72b7e6-8474-4f24-86d7-55bc72e6fc52",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "message_id": null,
+      "rating": "helpful",
+      "recommendation_key": "food_budget_6000",
+      "user_comment": "Perfect limit for dining out.",
+      "created_at": "2026-11-04T10:23:52.589Z"
+    },
+    {
+      "id": "195f9007-28c4-4da3-9faf-ddc74285185a",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "message_id": null,
+      "rating": "helpful",
+      "recommendation_key": "food_budget_6000",
+      "user_comment": "Perfect limit for dining out.",
+      "created_at": "2026-11-04T11:00:35.151Z"
+    }
+  ],
+  "proposals": [
+    {
+      "id": "b2366be4-0251-4bd3-839f-491f31c0f8b6",
+      "user_id": "679cf267-0940-4779-96cf-fd2a19d4e38b",
+      "conversation_id": "db63d242-d0d0-4387-8e92-9f381369763d",
+      "action_type": "create_budget",
+      "details": {
+        "category": "Food",
+        "allocated": 6000,
+        "name": "Food Budget",
+        "summary": "Set monthly Food budget limit to ₹6,000"
+      },
+      "status": "pending",
+      "expires_at": "2026-11-04T10:30:48.350Z",
+      "created_at": "2026-11-04T10:00:48.350Z",
+      "executed_at": null
+    },
+    {
+      "id": "e2947eca-8a05-430f-af3b-2096b07bf723",
+      "user_id": "8022019e-91f1-4040-8962-8d7a09c47502",
+      "conversation_id": "4403687b-e754-41ee-9fbf-48cd77f09d5f",
+      "action_type": "create_budget",
+      "details": {
+        "category": "Food",
+        "allocated": 6000,
+        "name": "Food Budget",
+        "summary": "Set monthly Food budget limit to ₹6,000"
+      },
+      "status": "confirmed",
+      "expires_at": "2026-11-04T10:32:39.096Z",
+      "created_at": "2026-11-04T10:02:39.096Z",
+      "executed_at": "2026-11-04T10:02:41.775Z"
+    },
+    {
+      "id": "2d151f70-4b13-4862-83be-b8a35a828c32",
+      "user_id": "53c87462-39bd-45d0-a32d-e5dec84ba0d8",
+      "conversation_id": "821c53b1-a5d3-4f6b-9404-33895edd796d",
+      "action_type": "create_budget",
+      "details": {
+        "category": "Food",
+        "allocated": 6000,
+        "name": "Food Budget",
+        "summary": "Set monthly Food budget limit to ₹6,000"
+      },
+      "status": "confirmed",
+      "expires_at": "2026-11-04T10:39:32.677Z",
+      "created_at": "2026-11-04T10:09:32.677Z",
+      "executed_at": "2026-11-04T10:09:35.833Z"
+    },
+    {
+      "id": "163b72e9-c8d1-44c8-9046-d264c15386e2",
+      "user_id": "d96f2c5d-a9c7-4f47-aa91-e91991b0ef97",
+      "conversation_id": "9b010cb8-21d0-4467-af0b-e6d6bb70e30d",
+      "action_type": "create_budget",
+      "details": {
+        "category": "Food",
+        "allocated": 6000,
+        "name": "Food Budget",
+        "summary": "Set monthly Food budget limit to ₹6,000"
+      },
+      "status": "confirmed",
+      "expires_at": "2026-11-04T10:53:44.077Z",
+      "created_at": "2026-11-04T10:23:44.077Z",
+      "executed_at": "2026-11-04T10:23:48.284Z"
+    },
+    {
+      "id": "dcc65b15-6f1a-4ef5-be50-0b14caa7ecdd",
+      "user_id": "c366a90a-e845-4409-82fe-c0c0441b8ff2",
+      "conversation_id": "ddcc455e-1a4f-4b50-afed-dcdb69fd13fc",
+      "action_type": "create_budget",
+      "details": {
+        "category": "Food",
+        "allocated": 6000,
+        "name": "Food Budget",
+        "summary": "Set monthly Food budget limit to ₹6,000"
+      },
+      "status": "confirmed",
+      "expires_at": "2026-11-04T11:30:31.014Z",
+      "created_at": "2026-11-04T11:00:31.014Z",
+      "executed_at": "2026-11-04T11:00:33.402Z"
+    }
+  ]
+}
